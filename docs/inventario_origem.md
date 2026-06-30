@@ -110,3 +110,17 @@ Origem lida em modo somente leitura: `~/Projects/webdev/bolao-dos-noia/`.
 - Documentacao de ferramenta ou historica que nao orienta manutencao atual.
 - CSS e JS acumulados sem tela correspondente no alvo.
 
+## Segunda triagem aplicada
+
+Apos comparar novamente rotas e modelos da origem, foram recuperadas features pequenas que tinham valor real e nao exigiam copiar os modulos grandes:
+
+- `routers/perfil.py`: mantido como modulo novo e enxuto para troca de nome, nickname e senha.
+- `routers/bets.py`: recuperada a intencao de desempate manual de grupos e melhores terceiros.
+- `routers/viewer.py`: adicionadas rotas compativeis `/palpite/{id}/resumo`, `/palpite/{id}/completa` e CSV.
+- `routers/live.py`: adicionado detalhe de palpites por jogo de grupo, com visibilidade limitada antes do deadline.
+
+Continuaram fora do alvo:
+
+- Bracket interativo completo com `BetMatch`, por ainda exigir uma modelagem maior para nao recriar o acoplamento antigo.
+- HTMX/partials do original, porque a versao sem JS cobre o fluxo essencial.
+- Admin avancado de edicao/exclusao em massa, porque o minimo operacional ja cobre cadastro e liberacao pontual.

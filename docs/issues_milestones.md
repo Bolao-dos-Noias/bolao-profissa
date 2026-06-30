@@ -42,3 +42,9 @@
 - #20 `fix: reduzir complexidade dos modulos criticos` - todos
 - #21 `docs: escrever relatorio final` - Nicolas
 
+## Rodada 2 - Lacunas da Referencia
+
+- #22 `feat: recuperar desempates e terceiros dos palpites` - Caio
+- #23 `feat: recuperar perfil e exportacao csv de palpites` - Gabriel
+- #24 `refactor: expor fluxos recuperados na interface minima` - Felipe
+- #25 `docs: atualizar relatorio de triagem e metricas` - Nicolas
