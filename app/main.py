@@ -8,7 +8,6 @@ from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from sqlmodel import Session, select
-from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from .config import settings
@@ -38,18 +37,33 @@ ADMIN_TOKEN_PATHS = {"/admin/seed", "/admin/sync"}
 ADMIN_SESSION_PREFIX = "/admin/users"
 
 
-class WorkflowGate(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        path = request.url.path
-        if path in ADMIN_TOKEN_PATHS or any(path.startswith(prefix) for prefix in ALLOW_PREFIX_ALL):
-            return await call_next(request)
+class WorkflowGateMiddleware:
+    def __init__(self, inner_app):
+        self.inner_app = inner_app
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            await self.inner_app(scope, receive, send)
+            return
+
+        request = Request(scope, receive)
+        path = scope.get("path", "")
+        if (
+            path in {"/healthz", "/favicon.ico"}
+            or path in ADMIN_TOKEN_PATHS
+            or any(path.startswith(prefix) for prefix in ALLOW_PREFIX_ALL)
+        ):
+            await self.inner_app(scope, receive, send)
+            return
 
         user_id = request.session.get("uid") if "session" in request.scope else None
         if not user_id:
             request.state.user_state = "unauth"
             if path in ALLOW_UNAUTH:
-                return await call_next(request)
-            return RedirectResponse("/login", status_code=303)
+                await self.inner_app(scope, receive, send)
+                return
+            await RedirectResponse("/login", status_code=303)(scope, receive, send)
+            return
 
         with Session(engine) as session:
             user = session.get(User, user_id)
@@ -63,20 +77,27 @@ class WorkflowGate(BaseHTTPMiddleware):
         request.state.missing_count = total
 
         if user and user.is_admin:
-            if path.startswith(ADMIN_SESSION_PREFIX) or path in {"/logout", "/healthz"}:
-                return await call_next(request)
-            return RedirectResponse("/admin/users", status_code=303)
+            if path.startswith(ADMIN_SESSION_PREFIX) or path == "/logout":
+                await self.inner_app(scope, receive, send)
+                return
+            await RedirectResponse("/admin/users", status_code=303)(scope, receive, send)
+            return
 
         if path.startswith("/admin/"):
-            return RedirectResponse("/login", status_code=303)
+            await RedirectResponse("/login", status_code=303)(scope, receive, send)
+            return
         if state == "no_profile" and path not in ALLOW_NO_PROFILE:
-            return RedirectResponse("/complete-profile", status_code=303)
+            await RedirectResponse("/complete-profile", status_code=303)(scope, receive, send)
+            return
         if state == "no_bet" and path not in ALLOW_NO_BET and path not in ALLOW_UNAUTH:
-            return RedirectResponse("/aposta", status_code=303)
-        return await call_next(request)
+            await RedirectResponse("/aposta", status_code=303)(scope, receive, send)
+            return
+        await self.inner_app(scope, receive, send)
 
 
-app.add_middleware(WorkflowGate)
+app.add_middleware(WorkflowGateMiddleware)
+
+
 app.add_middleware(
     SessionMiddleware,
     secret_key=settings.secret_key,
@@ -100,12 +121,12 @@ app.include_router(viewer.router)
 
 
 @app.get("/healthz")
-def healthz():
+async def healthz():
     return {"ok": True}
 
 
 @app.get("/api/next-match")
-def api_next_match(session: Session = Depends(get_session)):
+async def api_next_match(session: Session = Depends(get_session)):
     now = datetime.now(timezone.utc)
     match = session.exec(
         select(Match)
@@ -121,7 +142,7 @@ def api_next_match(session: Session = Depends(get_session)):
 
 
 @app.get("/favicon.ico")
-def favicon():
+async def favicon():
     return RedirectResponse("/static/assets/favicon.svg")
 
 

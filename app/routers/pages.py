@@ -36,7 +36,7 @@ def _copa_stats(session: Session) -> dict:
 
 
 @router.get("/")
-def home(
+async def home(
     request: Request,
     user: Optional[User] = Depends(current_user),
     session: Session = Depends(get_session),
@@ -58,7 +58,7 @@ def home(
 
 
 @router.get("/copa")
-def copa(
+async def copa(
     request: Request,
     user: Optional[User] = Depends(current_user),
     session: Session = Depends(get_session),
@@ -67,12 +67,12 @@ def copa(
 
 
 @router.get("/palpites")
-def palpites(request: Request, user: Optional[User] = Depends(current_user)):
+async def palpites(request: Request, user: Optional[User] = Depends(current_user)):
     return templates.TemplateResponse(request, "palpites.html", {"user": user})
 
 
 @router.get("/copa/consulta")
-def copa_consulta(
+async def copa_consulta(
     request: Request,
     team: str = "",
     stage: str = "",
@@ -123,6 +123,5 @@ def copa_consulta(
 
 
 @router.get("/regulamento")
-def regulamento(request: Request, user: Optional[User] = Depends(current_user)):
+async def regulamento(request: Request, user: Optional[User] = Depends(current_user)):
     return templates.TemplateResponse(request, "regulamento.html", {"user": user})
-

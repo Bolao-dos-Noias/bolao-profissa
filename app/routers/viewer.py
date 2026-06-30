@@ -34,7 +34,7 @@ def _render_palpite(
 
 
 @router.get("/minha-aposta/resumo")
-def minha_aposta_resumo(
+async def minha_aposta_resumo(
     request: Request,
     user: Optional[User] = Depends(current_user),
     session: Session = Depends(get_session),
@@ -45,7 +45,7 @@ def minha_aposta_resumo(
 
 
 @router.get("/minha-aposta/completa")
-def minha_aposta_completa(
+async def minha_aposta_completa(
     request: Request,
     user: Optional[User] = Depends(current_user),
     session: Session = Depends(get_session),
@@ -56,7 +56,7 @@ def minha_aposta_completa(
 
 
 @router.get("/palpites/{user_id:int}")
-def palpite_publico(
+async def palpite_publico(
     user_id: int,
     request: Request,
     current: Optional[User] = Depends(current_user),
@@ -68,4 +68,3 @@ def palpite_publico(
     if not _can_view(current, target):
         return templates.TemplateResponse(request, "viewer/locked.html", {"user": current, "target": target}, status_code=403)
     return _render_palpite(request, target, "completa", session)
-

@@ -28,7 +28,7 @@ def _players(session: Session, current: Optional[User]) -> list[User]:
 
 
 @router.get("/geral")
-def comparativo_geral(
+async def comparativo_geral(
     request: Request,
     user: Optional[User] = Depends(current_user),
     session: Session = Depends(get_session),
@@ -49,7 +49,7 @@ def comparativo_geral(
 
 
 @router.get("/1x1")
-def comparativo_1x1(
+async def comparativo_1x1(
     request: Request,
     a: Optional[int] = None,
     b: Optional[int] = None,
@@ -80,7 +80,7 @@ def comparativo_1x1(
 
 
 @router.get("/mata-mata")
-def comparativo_mata_mata(
+async def comparativo_mata_mata(
     request: Request,
     user: Optional[User] = Depends(current_user),
     session: Session = Depends(get_session),
@@ -100,4 +100,3 @@ def comparativo_mata_mata(
             "stage_labels": KO_STAGE_LABELS,
         },
     )
-

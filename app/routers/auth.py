@@ -15,7 +15,7 @@ router = APIRouter()
 
 
 @router.get("/login")
-def login_form(request: Request):
+async def login_form(request: Request):
     return templates.TemplateResponse(
         request,
         "auth/login.html",
@@ -25,7 +25,7 @@ def login_form(request: Request):
 
 @router.post("/login")
 @limiter.limit("100/15minute")
-def login(
+async def login(
     request: Request,
     nickname: str = Form(...),
     senha: str = Form(...),
@@ -45,13 +45,13 @@ def login(
 
 
 @router.get("/login/codigo")
-def login_codigo_form(request: Request):
+async def login_codigo_form(request: Request):
     return templates.TemplateResponse(request, "auth/login_codigo.html", {})
 
 
 @router.post("/login/codigo")
 @limiter.limit("100/15minute")
-def login_codigo(
+async def login_codigo(
     request: Request,
     code: str = Form(...),
     _: None = Depends(verify_csrf),
@@ -77,14 +77,14 @@ def login_codigo(
 
 
 @router.get("/complete-profile")
-def complete_profile_form(request: Request, user: Optional[User] = Depends(current_user)):
+async def complete_profile_form(request: Request, user: Optional[User] = Depends(current_user)):
     if not user:
         return RedirectResponse("/login", status_code=303)
     return templates.TemplateResponse(request, "auth/complete_profile.html", {"user": user, "errors": []})
 
 
 @router.post("/complete-profile")
-def complete_profile_save(
+async def complete_profile_save(
     request: Request,
     nome_completo: str = Form(""),
     nickname: str = Form(""),
@@ -126,7 +126,6 @@ def complete_profile_save(
 
 
 @router.api_route("/logout", methods=["GET", "POST"])
-def logout(request: Request):
+async def logout(request: Request):
     request.session.clear()
     return RedirectResponse("/", status_code=303)
-

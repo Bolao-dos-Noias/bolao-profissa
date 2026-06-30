@@ -5,7 +5,11 @@ from sqlmodel import Session
 from app.db import engine
 from app.domain.pontuacao import serialize_snapshot_ordering
 from app.models import LeaderboardSnapshot, Match
-from app.services.ranking import compute_scores, compute_snapshot_ordering, ordered_leaderboard_snapshots
+from app.services.ranking import (
+    compute_scores,
+    compute_snapshot_ordering,
+    ordered_leaderboard_snapshots,
+)
 
 
 def _sql_escape(value: str) -> str:

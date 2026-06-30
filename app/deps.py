@@ -9,7 +9,7 @@ from .db import get_session
 from .models import BetGroup, BetKnockout, User
 
 
-def current_user(request: Request, session: Session = Depends(get_session)) -> Optional[User]:
+async def current_user(request: Request, session: Session = Depends(get_session)) -> Optional[User]:
     user_id = request.session.get("uid")
     if not user_id:
         return None
@@ -89,7 +89,6 @@ def missing_picks_summary(session: Session, user: Optional[User], limit: int = 5
         select(BetKnockout).where(BetKnockout.user_id == user.id, BetKnockout.stage == "CHAMPION")
     ).first()
     if not champion:
-        items.append("Palpite de campeão")
+        items.append("Palpite de campeao")
 
     return items[:limit], len(items)
-

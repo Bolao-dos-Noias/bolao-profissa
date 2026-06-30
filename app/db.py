@@ -118,7 +118,6 @@ def init_db() -> None:
     _ensure_admin()
 
 
-def get_session():
+async def get_session():
     with Session(engine) as session:
         yield session
-

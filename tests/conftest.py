@@ -1,8 +1,9 @@
 import os
 import tempfile
 
+import httpx
 import pytest
-from fastapi.testclient import TestClient
+import pytest_asyncio
 from sqlmodel import SQLModel
 
 tmp_db = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
@@ -32,8 +33,8 @@ def fresh_db():
     yield
 
 
-@pytest.fixture
-def client():
-    with TestClient(app) as test_client:
+@pytest_asyncio.fixture
+async def client():
+    transport = httpx.ASGITransport(app=app)
+    async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as test_client:
         yield test_client
-

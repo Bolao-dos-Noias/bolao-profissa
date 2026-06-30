@@ -11,8 +11,8 @@ TEST_CODE = "code-abc-123"
 TEST_SENHA = "Abcd1234!"
 
 
-def _csrf(client, path: str) -> str:
-    response = client.get(path)
+async def _csrf(client, path: str) -> str:
+    response = await client.get(path)
     match = CSRF_RE.search(response.text)
     assert match, f"sem token CSRF em {path}"
     return match.group(1)
@@ -24,20 +24,24 @@ def _create_pending_user() -> None:
         session.commit()
 
 
-def _complete_and_login(client) -> None:
+async def _complete_and_login(client) -> None:
     _create_pending_user()
-    csrf = _csrf(client, "/login/codigo")
-    response = client.post("/login/codigo", data={"csrf": csrf, "code": TEST_CODE}, follow_redirects=False)
+    csrf = await _csrf(client, "/login/codigo")
+    response = await client.post(
+        "/login/codigo",
+        data={"csrf": csrf, "code": TEST_CODE},
+        follow_redirects=False,
+    )
     assert response.status_code == 303
-    csrf_profile = _csrf(client, "/complete-profile")
-    response = client.post(
+    csrf_profile = await _csrf(client, "/complete-profile")
+    response = await client.post(
         "/complete-profile",
         data={"csrf": csrf_profile, "nickname": "tester", "nome_completo": "Tester", "senha": TEST_SENHA},
         follow_redirects=False,
     )
     assert response.status_code == 303
-    csrf_login = _csrf(client, "/login")
-    response = client.post(
+    csrf_login = await _csrf(client, "/login")
+    response = await client.post(
         "/login",
         data={"csrf": csrf_login, "nickname": "tester", "senha": TEST_SENHA},
         follow_redirects=False,
@@ -45,8 +49,8 @@ def _complete_and_login(client) -> None:
     assert response.status_code == 303
 
 
-def _make_active(client) -> None:
-    _complete_and_login(client)
+async def _make_active(client) -> None:
+    await _complete_and_login(client)
     with Session(app_db.engine) as session:
         user = session.exec(select(User).where(User.nickname == "tester")).first()
         team_a = Team(name_pt="Brasil", fifa_code="BRA", iso2="br", group_letter="A")
@@ -71,72 +75,75 @@ def _make_active(client) -> None:
         session.commit()
 
 
-def test_healthz(client):
-    response = client.get("/healthz")
+async def test_healthz(client):
+    response = await client.get("/healthz")
     assert response.status_code == 200
     assert response.json() == {"ok": True}
 
 
-def test_home_public(client):
-    response = client.get("/")
+async def test_home_public(client):
+    response = await client.get("/")
     assert response.status_code == 200
     assert "Bolao Profissa" in response.text
 
 
-def test_login_invalid_code(client):
+async def test_login_invalid_code(client):
     _create_pending_user()
-    csrf = _csrf(client, "/login/codigo")
-    response = client.post("/login/codigo", data={"csrf": csrf, "code": "nao-existe"})
+    csrf = await _csrf(client, "/login/codigo")
+    response = await client.post("/login/codigo", data={"csrf": csrf, "code": "nao-existe"})
     assert response.status_code == 401
     assert "Codigo invalido" in response.text
 
 
-def test_first_access_complete_profile_and_login(client):
-    _complete_and_login(client)
-    response = client.get("/")
+async def test_first_access_complete_profile_and_login(client):
+    await _complete_and_login(client)
+    response = await client.get("/")
     assert response.status_code == 200
     assert "tester" in response.text
 
 
-def test_no_profile_redirects_to_complete(client):
+async def test_no_profile_redirects_to_complete(client):
     _create_pending_user()
-    csrf = _csrf(client, "/login/codigo")
-    client.post("/login/codigo", data={"csrf": csrf, "code": TEST_CODE}, follow_redirects=False)
-    response = client.get("/leaderboard", follow_redirects=False)
+    csrf = await _csrf(client, "/login/codigo")
+    await client.post(
+        "/login/codigo",
+        data={"csrf": csrf, "code": TEST_CODE},
+        follow_redirects=False,
+    )
+    response = await client.get("/leaderboard", follow_redirects=False)
     assert response.status_code == 303
     assert response.headers["location"] == "/complete-profile"
 
 
-def test_no_bet_redirects_to_aposta(client):
-    _complete_and_login(client)
-    response = client.get("/leaderboard", follow_redirects=False)
+async def test_no_bet_redirects_to_aposta(client):
+    await _complete_and_login(client)
+    response = await client.get("/leaderboard", follow_redirects=False)
     assert response.status_code == 303
     assert response.headers["location"] == "/aposta"
 
 
-def test_aposta_redirect_sem_login(client):
-    response = client.get("/aposta", follow_redirects=False)
+async def test_aposta_redirect_sem_login(client):
+    response = await client.get("/aposta", follow_redirects=False)
     assert response.status_code == 303
     assert response.headers["location"] == "/login"
 
 
-def test_leaderboard_active(client):
-    _make_active(client)
-    response = client.get("/leaderboard")
+async def test_leaderboard_active(client):
+    await _make_active(client)
+    response = await client.get("/leaderboard")
     assert response.status_code == 200
     assert "Ranking" in response.text
 
 
-def test_regulamento_active(client):
-    _make_active(client)
-    response = client.get("/regulamento")
+async def test_regulamento_active(client):
+    await _make_active(client)
+    response = await client.get("/regulamento")
     assert response.status_code == 200
     assert "Regulamento" in response.text
 
 
-def test_404_template_active(client):
-    _make_active(client)
-    response = client.get("/rota-inexistente-do-bolao")
+async def test_404_template_active(client):
+    await _make_active(client)
+    response = await client.get("/rota-inexistente-do-bolao")
     assert response.status_code == 404
     assert "404" in response.text
-

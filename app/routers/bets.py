@@ -8,7 +8,13 @@ from app.db import get_session
 from app.deps import can_edit_picks, current_user
 from app.models import User
 from app.security import verify_csrf
-from app.services.palpites import KO_STAGE_ORDER, KO_STAGE_SIZES, build_bet_context, save_group_pick, save_ko_stage
+from app.services.palpites import (
+    KO_STAGE_ORDER,
+    KO_STAGE_SIZES,
+    build_bet_context,
+    save_group_pick,
+    save_ko_stage,
+)
 from app.templates_env import templates
 
 router = APIRouter()
@@ -17,7 +23,7 @@ VALID_GROUP_PICKS = {"HOME", "DRAW", "AWAY"}
 
 
 @router.get("/aposta")
-def aposta(
+async def aposta(
     request: Request,
     user: Optional[User] = Depends(current_user),
     session: Session = Depends(get_session),
@@ -30,7 +36,7 @@ def aposta(
 
 
 @router.post("/aposta/grupo/{match_id:int}")
-def post_group_pick(
+async def post_group_pick(
     match_id: int,
     pick: str = Form(...),
     user: Optional[User] = Depends(current_user),
@@ -74,4 +80,3 @@ async def post_ko_stage(
         raise HTTPException(400, f"{stage} permite no maximo {max_size} selecoes")
     save_ko_stage(session, user.id, stage, team_ids)
     return RedirectResponse("/aposta", status_code=303)
-

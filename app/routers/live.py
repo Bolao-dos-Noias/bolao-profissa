@@ -82,7 +82,7 @@ def _official_group_summary(session: Session, teams: dict[int, Team]) -> list[di
 
 
 @router.get("/ao-vivo")
-def ao_vivo(
+async def ao_vivo(
     request: Request,
     user: Optional[User] = Depends(current_user),
     session: Session = Depends(get_session),
@@ -102,7 +102,7 @@ def ao_vivo(
 
 
 @router.get("/ao-vivo/consolidado")
-def consolidado(
+async def consolidado(
     request: Request,
     user: Optional[User] = Depends(current_user),
     session: Session = Depends(get_session),
@@ -126,7 +126,7 @@ def consolidado(
 
 
 @router.get("/ao-vivo/consolidado/completo")
-def consolidado_completo(
+async def consolidado_completo(
     request: Request,
     user: Optional[User] = Depends(current_user),
     session: Session = Depends(get_session),
@@ -140,4 +140,3 @@ def consolidado_completo(
         "live/resultados.html",
         {"user": user, "teams": teams, "matches": matches},
     )
-

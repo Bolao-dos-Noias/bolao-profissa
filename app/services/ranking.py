@@ -1,6 +1,6 @@
+import re
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
-import re
 from typing import Optional
 
 from sqlmodel import Session, select

@@ -25,14 +25,14 @@ def _check_token(token: str | None, bearer: str | None = None) -> None:
         raise HTTPException(status_code=401, detail="admin token invalido")
 
 
-def require_admin(user: User | None = Depends(current_user)) -> User:
+async def require_admin(user: User | None = Depends(current_user)) -> User:
     if not user or not user.is_admin:
         raise HTTPException(status_code=403, detail="admin necessario")
     return user
 
 
 @router.api_route("/seed", methods=["GET", "POST"])
-def admin_seed(x_admin_token: str | None = Header(default=None)):
+async def admin_seed(x_admin_token: str | None = Header(default=None)):
     _check_token(x_admin_token)
     return {"ok": True, "action": "seed", **seed(force=False)}
 
@@ -48,7 +48,7 @@ async def admin_sync(
 
 
 @router.get("/users")
-def users_page(
+async def users_page(
     request: Request,
     admin: User = Depends(require_admin),
     session: Session = Depends(get_session),
@@ -62,7 +62,7 @@ def users_page(
 
 
 @router.post("/users/new")
-def users_create(
+async def users_create(
     request: Request,
     nickname: str = Form(...),
     nome_completo: str = Form(""),
@@ -100,7 +100,7 @@ def users_create(
 
 
 @router.post("/users/{user_id:int}/unlock")
-def users_unlock(
+async def users_unlock(
     user_id: int,
     minutes: int = Form(30),
     admin: User = Depends(require_admin),  # noqa: ARG001
@@ -114,4 +114,3 @@ def users_unlock(
     session.add(user)
     session.commit()
     return RedirectResponse("/admin/users?flash=edicao-liberada", status_code=303)
-

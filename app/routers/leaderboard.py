@@ -58,7 +58,7 @@ def _chart_payload(session: Session) -> dict:
 
 
 @router.get("/leaderboard")
-def leaderboard(
+async def leaderboard(
     request: Request,
     user: Optional[User] = Depends(current_user),
     session: Session = Depends(get_session),
@@ -79,4 +79,3 @@ def leaderboard(
             "maxima": current_maxima(session),
         },
     )
-
