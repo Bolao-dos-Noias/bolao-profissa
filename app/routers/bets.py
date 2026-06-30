@@ -13,7 +13,9 @@ from app.services.palpites import (
     KO_STAGE_SIZES,
     build_bet_context,
     save_group_pick,
+    save_group_tiebreak,
     save_ko_stage,
+    save_thirds_order,
 )
 from app.templates_env import templates
 
@@ -50,6 +52,62 @@ async def post_group_pick(
     if pick not in VALID_GROUP_PICKS:
         raise HTTPException(400, "Palpite invalido")
     save_group_pick(session, user.id, match_id, pick)
+    return RedirectResponse("/aposta", status_code=303)
+
+
+@router.post("/aposta/grupo/{group}/tiebreak")
+async def post_group_tiebreak(
+    group: str,
+    team_id: int = Form(...),
+    direction: str = Form(...),
+    user: Optional[User] = Depends(current_user),
+    _: None = Depends(verify_csrf),
+    session: Session = Depends(get_session),
+):
+    if not user:
+        raise HTTPException(401, "login necessario")
+    if not can_edit_picks(user):
+        raise HTTPException(403, "Prazo encerrado")
+    if direction not in {"up", "down"}:
+        raise HTTPException(400, "direcao invalida")
+
+    context = build_bet_context(session, user)
+    rows = list(context["standings"].get(group.upper(), []))
+    index = next((position for position, row in enumerate(rows) if row.team_id == team_id), -1)
+    if index < 0:
+        raise HTTPException(404, "selecao fora do grupo")
+    swap_index = index - 1 if direction == "up" else index + 1
+    if swap_index < 0 or swap_index >= len(rows):
+        raise HTTPException(400, "movimento fora da classificacao")
+    if rows[index].points != rows[swap_index].points:
+        raise HTTPException(400, "desempate permitido apenas entre selecoes empatadas")
+
+    ordered_ids = [row.team_id for row in rows]
+    ordered_ids[index], ordered_ids[swap_index] = ordered_ids[swap_index], ordered_ids[index]
+    save_group_tiebreak(session, user.id, group.upper(), ordered_ids)
+    return RedirectResponse("/aposta", status_code=303)
+
+
+@router.post("/aposta/terceiros")
+async def post_thirds_order(
+    team_ids: list[int] = Form(default=[]),
+    user: Optional[User] = Depends(current_user),
+    _: None = Depends(verify_csrf),
+    session: Session = Depends(get_session),
+):
+    if not user:
+        raise HTTPException(401, "login necessario")
+    if not can_edit_picks(user):
+        raise HTTPException(403, "Prazo encerrado")
+
+    context = build_bet_context(session, user)
+    candidate_ids = {item["team_id"] for item in context["thirds_candidates"]}
+    unique_ids = list(dict.fromkeys(team_ids))
+    if len(unique_ids) > 8:
+        raise HTTPException(400, "selecione no maximo 8 terceiros")
+    if any(team_id not in candidate_ids for team_id in unique_ids):
+        raise HTTPException(400, "terceiro fora dos candidatos calculados")
+    save_thirds_order(session, user.id, unique_ids)
     return RedirectResponse("/aposta", status_code=303)
 
 

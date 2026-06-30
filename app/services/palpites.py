@@ -3,7 +3,7 @@ from collections import defaultdict
 from sqlmodel import Session, select
 
 from app.domain.classificacao import compute_standings, derive_r32_candidates
-from app.models import BetGroup, BetKnockout, Match, Team, User
+from app.models import BetGroup, BetKnockout, BetThirdsOrder, BetTieBreak, Match, Team, User
 
 KO_STAGE_LABELS = {
     "R32": "16-avos",
@@ -51,11 +51,40 @@ def user_ko_picks(session: Session, user_id: int) -> dict[str, set[int]]:
     return dict(out)
 
 
+def user_tiebreaks(session: Session, user_id: int) -> dict[str, list[int]]:
+    rows = session.exec(select(BetTieBreak).where(BetTieBreak.user_id == user_id)).all()
+    out: dict[str, list[int]] = {}
+    for row in rows:
+        try:
+            out[row.group_letter] = [int(item) for item in row.ordered_team_ids.split(",") if item]
+        except ValueError:
+            continue
+    return out
+
+
+def user_thirds_order(session: Session, user_id: int, candidates: list[dict]) -> list[int]:
+    candidate_ids = [item["team_id"] for item in candidates]
+    candidate_set = set(candidate_ids)
+    saved = session.get(BetThirdsOrder, user_id)
+    if saved and saved.ordered_team_ids:
+        try:
+            selected = [
+                int(item)
+                for item in saved.ordered_team_ids.split(",")
+                if item and int(item) in candidate_set
+            ]
+            return selected[:8]
+        except ValueError:
+            pass
+    return candidate_ids[:8]
+
+
 def build_bet_context(session: Session, user: User) -> dict:
     grouped = matches_by_group(session)
     teams = teams_by_id(session)
     group_picks = user_group_picks(session, user.id)
-    standings = compute_standings(grouped, group_picks, teams)
+    tiebreaks = user_tiebreaks(session, user.id)
+    standings = compute_standings(grouped, group_picks, teams, tiebreaks=tiebreaks)
     _top2, thirds = derive_r32_candidates(standings)
     return {
         "user": user,
@@ -64,7 +93,9 @@ def build_bet_context(session: Session, user: User) -> dict:
         "matches_by_group": grouped,
         "group_picks": group_picks,
         "standings": standings,
+        "tiebreaks": tiebreaks,
         "thirds_candidates": thirds,
+        "thirds_order": user_thirds_order(session, user.id, thirds),
         "ko_picks": user_ko_picks(session, user.id),
         "ko_stage_labels": KO_STAGE_LABELS,
         "ko_stage_sizes": KO_STAGE_SIZES,
@@ -81,6 +112,30 @@ def save_group_pick(session: Session, user_id: int, match_id: int, pick: str) ->
         session.add(existing)
     else:
         session.add(BetGroup(user_id=user_id, match_id=match_id, pick=pick))
+    session.commit()
+
+
+def save_group_tiebreak(session: Session, user_id: int, group: str, team_ids: list[int]) -> None:
+    existing = session.exec(
+        select(BetTieBreak).where(BetTieBreak.user_id == user_id, BetTieBreak.group_letter == group)
+    ).first()
+    ordered = ",".join(str(team_id) for team_id in team_ids)
+    if existing:
+        existing.ordered_team_ids = ordered
+        session.add(existing)
+    else:
+        session.add(BetTieBreak(user_id=user_id, group_letter=group, ordered_team_ids=ordered))
+    session.commit()
+
+
+def save_thirds_order(session: Session, user_id: int, team_ids: list[int]) -> None:
+    ordered = ",".join(str(team_id) for team_id in dict.fromkeys(team_ids))
+    existing = session.get(BetThirdsOrder, user_id)
+    if existing:
+        existing.ordered_team_ids = ordered
+        session.add(existing)
+    else:
+        session.add(BetThirdsOrder(user_id=user_id, ordered_team_ids=ordered))
     session.commit()
 
 
@@ -101,4 +156,3 @@ def player_list(session: Session) -> list[User]:
         .where(User.is_admin == False)  # noqa: E712
         .order_by(User.nickname)
     ).all()
-
