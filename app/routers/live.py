@@ -5,8 +5,8 @@ from fastapi import APIRouter, Depends, Request
 from sqlmodel import Session, select
 
 from app.db import get_session
-from app.deps import current_user
-from app.models import Match, Team, User
+from app.deps import current_user, deadline_passed
+from app.models import BetGroup, Match, Team, User
 from app.services.ranking import stage_qualifiers
 from app.templates_env import templates
 
@@ -139,4 +139,34 @@ async def consolidado_completo(
         request,
         "live/resultados.html",
         {"user": user, "teams": teams, "matches": matches},
+    )
+
+
+@router.get("/ao-vivo/jogo/{match_id:int}/palpites")
+async def palpites_do_jogo(
+    match_id: int,
+    request: Request,
+    user: Optional[User] = Depends(current_user),
+    session: Session = Depends(get_session),
+):
+    match = session.get(Match, match_id)
+    if not match:
+        return templates.TemplateResponse(request, "404.html", {"user": user}, status_code=404)
+
+    teams = _teams(session)
+    bets = session.exec(select(BetGroup).where(BetGroup.match_id == match_id)).all()
+    picks = {bet.user_id: bet.pick for bet in bets}
+    if deadline_passed():
+        players = session.exec(
+            select(User)
+            .where(User.is_admin == False, User.password_hash != None)  # noqa: E711,E712
+            .order_by(User.nickname)
+        ).all()
+    else:
+        players = [user] if user else []
+    rows = [{"player": player, "pick": picks.get(player.id)} for player in players]
+    return templates.TemplateResponse(
+        request,
+        "live/palpites_jogo.html",
+        {"user": user, "match": match, "teams": teams, "rows": rows},
     )
