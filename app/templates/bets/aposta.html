@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Aposta · Bolao Profissa{% endblock %}
+{% block title %}Aposta | Bolao Profissa{% endblock %}
 {% block content %}
   <div class="page-head">
     <div>
@@ -35,7 +35,7 @@
           <h3>Classificacao prevista</h3>
           <ol>
             {% for row in standings[group] %}
-              <li>{{ row.team_name }} · {{ row.points }} pts{% if row.tied %} · empate{% endif %}</li>
+              <li>{{ row.team_name }} | {{ row.points }} pts{% if row.tied %} | empate{% endif %}</li>
             {% endfor %}
           </ol>
         {% endif %}

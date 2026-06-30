@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Comparativo geral · Bolao Profissa{% endblock %}
+{% block title %}Comparativo geral | Bolao Profissa{% endblock %}
 {% block content %}
   <div class="page-head">
     <div>
@@ -24,7 +24,7 @@
           {% set home = teams.get(match.home_team_id) %}
           {% set away = teams.get(match.away_team_id) %}
           <tr>
-            <td>{{ match.group_letter }} #{{ match.match_no }} · {{ home.name_pt if home else "-" }} x {{ away.name_pt if away else "-" }}</td>
+            <td>{{ match.group_letter }} #{{ match.match_no }} | {{ home.name_pt if home else "-" }} x {{ away.name_pt if away else "-" }}</td>
             {% for player in players %}
               <td>{{ picks[player.id].get(match.id)|outcome }}</td>
             {% endfor %}
@@ -34,4 +34,3 @@
     </table>
   </div>
 {% endblock %}
-

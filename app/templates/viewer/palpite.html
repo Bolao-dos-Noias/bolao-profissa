@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Palpite · Bolao Profissa{% endblock %}
+{% block title %}Palpite | Bolao Profissa{% endblock %}
 {% block content %}
   <div class="page-head">
     <div>
@@ -18,7 +18,7 @@
         <h2>Grupo {{ group }}</h2>
         <ol>
           {% for row in rows %}
-            <li>{{ row.team_name }} · {{ row.points }} pts</li>
+            <li>{{ row.team_name }} | {{ row.points }} pts</li>
           {% endfor %}
         </ol>
       </div>
@@ -68,4 +68,3 @@
     </table>
   </div>
 {% endblock %}
-
