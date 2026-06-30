@@ -7,8 +7,15 @@
       <p class="muted">{{ "Resumo" if mode == "resumo" else "Completo" }}</p>
     </div>
     <div class="actions">
-      <a class="button secondary" href="/minha-aposta/resumo">Resumo</a>
-      <a class="button secondary" href="/minha-aposta/completa">Completo</a>
+      {% if user and user.id == target.id %}
+        <a class="button secondary" href="/minha-aposta/resumo">Resumo</a>
+        <a class="button secondary" href="/minha-aposta/completa">Completo</a>
+        <a class="button secondary" href="/minha-aposta/completa.csv">CSV</a>
+      {% else %}
+        <a class="button secondary" href="/palpite/{{ target.id }}/resumo">Resumo</a>
+        <a class="button secondary" href="/palpite/{{ target.id }}/completa">Completo</a>
+        <a class="button secondary" href="/palpite/{{ target.id }}/completa.csv">CSV</a>
+      {% endif %}
     </div>
   </div>
 

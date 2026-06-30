@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Palpites do jogo | Bolao Profissa{% endblock %}
+{% block content %}
+  {% set home = teams.get(match.home_team_id) %}
+  {% set away = teams.get(match.away_team_id) %}
+  <div class="page-head">
+    <div>
+      <h1>Palpites do jogo</h1>
+      <p class="muted">{{ home.name_pt if home else match.slot_home }} x {{ away.name_pt if away else match.slot_away }} | {{ match.kickoff_utc|brt }}</p>
+    </div>
+    <a class="button secondary" href="/ao-vivo">Ao vivo</a>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Participante</th><th>Palpite</th></tr></thead>
+      <tbody>
+        {% for row in rows %}
+          <tr>
+            <td>{{ row.player.nickname }}</td>
+            <td>{{ row.pick|outcome }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="2">Sem palpites visiveis.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

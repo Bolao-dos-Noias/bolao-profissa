@@ -137,6 +137,10 @@ h3 {
   padding: 16px;
 }
 
+.panel.narrow {
+  max-width: 520px;
+}
+
 .band {
   background: var(--surface);
   border-top: 1px solid var(--line);
@@ -180,6 +184,13 @@ button.secondary {
   color: var(--ink);
 }
 
+button.compact,
+.button.compact {
+  min-height: 30px;
+  padding: 4px 8px;
+  font-size: 0.86rem;
+}
+
 form.stack {
   display: grid;
   gap: 12px;
@@ -207,6 +218,14 @@ select {
   border: 1px solid var(--red);
   border-radius: 6px;
   padding: 10px 12px;
+  background: #fff3f1;
+  color: var(--red);
+}
+
+.alert-list {
+  border: 1px solid var(--red);
+  border-radius: 6px;
+  padding: 10px 12px 10px 30px;
   background: #fff3f1;
   color: var(--red);
 }
@@ -340,6 +359,27 @@ tr:last-child td {
   font-weight: 600;
 }
 
+.compact-list {
+  display: grid;
+  gap: 8px;
+  padding-left: 22px;
+}
+
+.compact-list li {
+  padding-bottom: 6px;
+}
+
+.inline-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: 8px;
+}
+
+.inline-actions form {
+  display: inline-flex;
+}
+
 .score {
   font-size: 1.1rem;
   font-weight: 900;
@@ -395,4 +435,3 @@ tr:last-child td {
     min-width: 560px;
   }
 }
-
