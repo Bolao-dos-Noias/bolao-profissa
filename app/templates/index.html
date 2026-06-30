@@ -1,27 +1,26 @@
 {% extends "base.html" %}
-{% block title %}Inicio | Bolao Profissa{% endblock %}
+{% block title %}Início | Bolão Profissa{% endblock %}
 {% block content %}
-  <div class="page-head">
-    <div>
-      <h1>Bolao Profissa</h1>
-      <p class="muted">
-        {% if user %}
-          Ola, {{ user.nickname }}. Deadline: {{ deadline|brt }}.
-        {% else %}
-          Entre com sua conta ou use o codigo de primeiro acesso.
-        {% endif %}
-      </p>
-    </div>
-    <div class="actions">
+  <section class="hero">
+    <span class="eyebrow">1ª edição · Desde 2026</span>
+    <h1 class="hero__title">Bolão Profissa<br><em>Copa do Mundo 2026</em></h1>
+    <p class="hero__lede">
       {% if user %}
-        <a class="button" href="/aposta">Editar palpite</a>
-        <a class="button secondary" href="/leaderboard">Ver ranking</a>
+        Salve, {{ user.nickname }}. O deadline dos palpites é {{ deadline|brt }}.
       {% else %}
-        <a class="button" href="/login">Entrar</a>
-        <a class="button secondary" href="/login/codigo">Primeiro acesso</a>
+        Salve, participantes! Entre com sua conta ou use o código de primeiro acesso.
+      {% endif %}
+    </p>
+    <div class="hero__actions">
+      {% if user %}
+        <a class="cta" href="/aposta">Cravar palpite</a>
+        <a class="cta cta--ghost" href="/leaderboard">Ver ranking</a>
+      {% else %}
+        <a class="cta" href="/login/codigo">Entrar com código</a>
+        <a class="cta cta--ghost" href="/login">Já tenho conta</a>
       {% endif %}
     </div>
-  </div>
+  </section>
 
   <section class="grid">
     <div class="panel">

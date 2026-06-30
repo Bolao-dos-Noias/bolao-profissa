@@ -110,7 +110,7 @@ async def test_healthz(client):
 async def test_home_public(client):
     response = await client.get("/")
     assert response.status_code == 200
-    assert "Bolao Profissa" in response.text
+    assert "Bolão Profissa" in response.text
 
 
 async def test_login_invalid_code(client):

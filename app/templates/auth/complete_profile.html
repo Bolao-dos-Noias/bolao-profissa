@@ -1,8 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Completar perfil | Bolao Profissa{% endblock %}
+{% block title %}Completar perfil | Bolão Profissa{% endblock %}
 {% block content %}
-  <section class="panel">
-    <h1>Completar perfil</h1>
+  <section class="form-card">
+    <span class="eyebrow">Perfil</span>
+    <h1>Completar <em>cadastro</em></h1>
     {% for error in errors %}<p class="alert">{{ error }}</p>{% endfor %}
     <form class="stack" method="post">
       <input type="hidden" name="csrf" value="{{ csrf_token(request) }}">

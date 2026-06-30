@@ -1,8 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Login | Bolao Profissa{% endblock %}
+{% block title %}Entrar | Bolão Profissa{% endblock %}
 {% block content %}
-  <section class="panel">
-    <h1>Login</h1>
+  <section class="login-single">
+  <div class="form-card">
+    <span class="eyebrow">Já tem conta</span>
+    <h1>Logar <em>direto</em></h1>
     {% if registered %}<p class="ok">Cadastro concluido. Entre com nickname e senha.</p>{% endif %}
     {% if error %}<p class="alert">{{ error }}</p>{% endif %}
     <form class="stack" method="post">
@@ -15,6 +17,7 @@
       </label>
       <button type="submit">Entrar</button>
     </form>
-    <p><a href="/login/codigo">Tenho codigo de primeiro acesso</a></p>
+  </div>
+  <a class="cta cta--ghost login-switch" href="/login/codigo">criar conta com código</a>
   </section>
 {% endblock %}

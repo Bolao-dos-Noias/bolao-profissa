@@ -3,46 +3,137 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Bolao Profissa{% endblock %}</title>
+    <meta name="theme-color" content="#062118">
+    <meta name="description" content="Bolão Profissa - Copa do Mundo 2026.">
+    <title>{% block title %}Bolão Profissa{% endblock %}</title>
     <link rel="icon" href="/static/assets/favicon.svg">
     <link rel="stylesheet" href="/static/css/app.css">
   </head>
   <body>
-    <header class="topbar">
-      <div class="topbar-inner">
-        <a class="brand" href="/">
-          <img src="/static/assets/trofeu_copa.png" alt="">
-          <span>Bolao Profissa</span>
+    <div class="site-wrap">
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker__track">
+          <span>Bolão Profissa</span>
+          <span>Copa do Mundo 2026</span>
+          <span>1ª edição</span>
+          <span>bons palpites</span>
+          <span>Bolão Profissa</span>
+          <span>Copa do Mundo 2026</span>
+          <span>1ª edição</span>
+          <span>bons palpites</span>
+        </div>
+      </div>
+
+      <header class="topbar">
+        {% set current_path = request.url.path %}
+        {% set user_state = request.state.user_state | default("unauth") %}
+        {% set is_admin_user = user and user.is_admin %}
+        {% set copa_active = current_path.startswith("/copa") or current_path.startswith("/ao-vivo") %}
+        {% set palpites_active = current_path.startswith("/palpites") or current_path.startswith("/minha-aposta") or current_path.startswith("/comparativo") or current_path.startswith("/aposta") or current_path.startswith("/palpite/") %}
+        {% set ranking_active = current_path.startswith("/leaderboard") or current_path.startswith("/regulamento") %}
+
+        <a class="brand" href="/" aria-label="Bolão Profissa">
+          <span class="brand__chip">
+            <img src="/static/assets/trofeu_copa.png" alt="" width="18" height="18">
+          </span>
+          <span class="brand__mark">
+            <strong>Bolão Profissa</strong>
+            <small>Copa do Mundo 2026</small>
+          </span>
         </a>
-        <nav class="nav" aria-label="principal">
+
+        <nav class="main-nav" aria-label="Principal">
           {% if user %}
-            <a href="/leaderboard">Ranking</a>
-            <a href="/aposta">Aposta</a>
-            <a href="/minha-aposta/resumo">Meu palpite</a>
-            <a href="/comparativo/geral">Comparativo</a>
-            <a href="/ao-vivo">Ao vivo</a>
-            <a href="/copa">Copa</a>
-            <a href="/perfil">Perfil</a>
-            {% if user.is_admin %}<a href="/admin/users">Admin</a>{% endif %}
-            <form method="post" action="/logout">
-              <button type="submit">Sair</button>
-            </form>
-          {% else %}
-            <a href="/login">Entrar</a>
-            <a href="/login/codigo">Primeiro acesso</a>
+            {% if is_admin_user %}
+              <a href="/admin/users" {% if current_path.startswith("/admin/users") %}aria-current="page"{% endif %}>Perfis</a>
+            {% elif user_state in ("no_bet", "active") %}
+              <div class="nav-section{% if copa_active %} is-current{% endif %}">
+                <a class="nav-section__link" href="/copa" {% if copa_active %}aria-current="page"{% endif %}>Copa</a>
+                <button class="nav-section__toggle" type="button" aria-label="Abrir seção Copa">▾</button>
+                <div class="nav-section__menu">
+                  <a href="/ao-vivo">Ao vivo</a>
+                  <a href="/ao-vivo/consolidado">Classificação</a>
+                  <a href="/ao-vivo/consolidado/completo">Resultados</a>
+                  <a href="/copa/consulta">Consulta</a>
+                </div>
+              </div>
+
+              <div class="nav-section{% if palpites_active %} is-current{% endif %}">
+                <a class="nav-section__link" href="/palpites" {% if palpites_active %}aria-current="page"{% endif %}>Palpites</a>
+                <button class="nav-section__toggle" type="button" aria-label="Abrir seção Palpites">▾</button>
+                <div class="nav-section__menu">
+                  <a href="/aposta">Editar palpite</a>
+                  <a href="/minha-aposta/resumo">Meu resumo</a>
+                  <a href="/minha-aposta/completa">Completo</a>
+                  <a href="/comparativo/geral">Comparativo</a>
+                </div>
+              </div>
+
+              <div class="nav-section{% if ranking_active %} is-current{% endif %}">
+                <a class="nav-section__link" href="/leaderboard" {% if ranking_active %}aria-current="page"{% endif %}>Ranking</a>
+                <button class="nav-section__toggle" type="button" aria-label="Abrir seção Ranking">▾</button>
+                <div class="nav-section__menu">
+                  <a href="/leaderboard">Ranking geral</a>
+                  <a href="/regulamento">Regulamento</a>
+                  <a href="/leaderboard#regras">Regras</a>
+                </div>
+              </div>
+            {% endif %}
           {% endif %}
         </nav>
-      </div>
-    </header>
-    <main class="container">
-      {% if request.state.missing_count is defined and request.state.missing_count %}
-        <div class="alert">
-          Faltam {{ request.state.missing_count }} itens do seu palpite.
-          {{ request.state.missing_preview|join(", ") }}
+
+        <div class="user-area">
+          {% if not is_admin_user %}
+            <span class="counter-chip">
+              <small>deadline</small>
+              <strong>11/06</strong>
+            </span>
+            <span class="counter-chip">
+              <small>copa</small>
+              <strong>2026</strong>
+            </span>
+          {% endif %}
+          {% if user %}
+            <div class="user-menu">
+              <button class="user-pill" type="button" aria-label="Menu de perfil">{{ user.nickname }} <span>▾</span></button>
+              <div class="user-menu__panel">
+                {% if not is_admin_user %}
+                  <a class="user-menu__item" href="/perfil/nome">Trocar nome</a>
+                  <a class="user-menu__item" href="/perfil/nickname">Trocar nickname</a>
+                  <a class="user-menu__item" href="/perfil/senha">Trocar senha</a>
+                {% endif %}
+                <form method="post" action="/logout">
+                  <button class="user-menu__item user-menu__item--danger" type="submit">Sair</button>
+                </form>
+              </div>
+            </div>
+          {% else %}
+            <a class="cta cta--sm" href="/login">Entrar</a>
+          {% endif %}
         </div>
-      {% endif %}
-      {% block content %}{% endblock %}
-    </main>
-    <footer class="footer">Copa 2026 | projeto didatico de engenharia de software</footer>
+      </header>
+
+      <main class="container">
+        {% if request.state.missing_count is defined and request.state.missing_count %}
+          <aside class="picks-warn" role="status" aria-live="polite">
+            <div class="picks-warn__head">
+              <span class="picks-warn__dot" aria-hidden="true"></span>
+              <strong>Palpite incompleto</strong>
+              <span>{{ request.state.missing_count }} pendente{{ "s" if request.state.missing_count > 1 else "" }}</span>
+              <a href="/aposta">Completar</a>
+            </div>
+            <p>{{ request.state.missing_preview|join(", ") }}</p>
+          </aside>
+        {% endif %}
+        {% block content %}{% endblock %}
+      </main>
+
+      <footer class="footer">
+        <div class="footer__sign">
+          Bolão Profissa<br>
+          <em>1ª edição · Desde 2026</em>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>
