@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Admin · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Participantes</h1>
+      <p class="muted">Cadastro por codigo de convite e liberacao pontual de edicao.</p>
+    </div>
+  </div>
+  {% if flash %}<p class="ok">{{ flash }}</p>{% endif %}
+  {% for error in errors %}<p class="alert">{{ error }}</p>{% endfor %}
+  <form class="panel stack" method="post" action="/admin/users/new">
+    <input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
+    <label>Nickname
+      <input name="nickname" required>
+    </label>
+    <label>Nome completo
+      <input name="nome_completo">
+    </label>
+    <button type="submit">Criar participante</button>
+  </form>
+  <section class="band"><h2>Usuarios</h2></section>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Nickname</th><th>Nome</th><th>Status</th><th>Codigo</th><th>Edicao</th></tr></thead>
+      <tbody>
+        {% for item in users %}
+          <tr>
+            <td>{{ item.nickname }}</td>
+            <td>{{ item.nome_completo or "-" }}</td>
+            <td>{{ "admin" if item.is_admin else "ativo" if item.password_hash else "pendente" }}</td>
+            <td>{{ item.invite_code or "-" }}</td>
+            <td>
+              {% if not item.is_admin %}
+                <form method="post" action="/admin/users/{{ item.id }}/unlock">
+                  <input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
+                  <input type="hidden" name="minutes" value="30">
+                  <button class="secondary" type="submit">30 min</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

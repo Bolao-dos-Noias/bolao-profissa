@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Ranking · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Ranking</h1>
+      <p class="muted">{% if pre_cup %}Pre-copa: ordem alfabetica ate o fechamento.{% else %}Pontuacao oficial e live ranking.{% endif %}</p>
+    </div>
+    <a class="button secondary" href="/regulamento">Regras</a>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Participante</th><th>Total</th><th>Grupos</th><th>Zebras</th><th>Mata-mata</th><th>Delta</th></tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+          <tr class="leader-row {% if user and row.user_id == user.id %}current{% endif %}">
+            <td>{{ row.rank or loop.index }}</td>
+            <td><a href="/palpites/{{ row.user_id }}">{{ row.nickname }}</a></td>
+            <td><strong>{{ row.total }}</strong></td>
+            <td>{{ row.group_pts }}</td>
+            <td>{{ row.zebra_pts }} / {{ row.zebra_max }}</td>
+            <td>{{ row.ko_pts }}</td>
+            <td>{% if row.delta_rank is not none %}{{ "%+d"|format(row.delta_rank) }}{% else %}-{% endif %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <section class="band">
+    <h2>Historico</h2>
+    {% if chart.has_data %}
+      <div class="chart">
+        {% for serie in chart.series %}
+          {% set last = serie.points[-1].total if serie.points else 0 %}
+          {% set width = (last * 100 / chart.max_total) if chart.max_total else 0 %}
+          <div>
+            <strong>{{ serie.nickname }}</strong> <span class="muted">{{ last }} pts</span>
+            <div class="spark"><span style="width: {{ width }}%"></span></div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="muted">Sem snapshots ainda.</p>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <h2>Maximos abertos</h2>
+    <p>Grupos {{ maxima.p }}, 16-avos {{ maxima.r32 }}, oitavas {{ maxima.r16 }}, quartas {{ maxima.qf }}, semifinais {{ maxima.sf }}, final {{ maxima.f }}, campeao {{ maxima.champ }}.</p>
+  </section>
+{% endblock %}
+

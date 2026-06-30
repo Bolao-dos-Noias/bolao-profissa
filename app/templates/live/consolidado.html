@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Consolidado · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Consolidado oficial</h1>
+      <p class="muted">Classificacao calculada pelos resultados sincronizados.</p>
+    </div>
+    <a class="button secondary" href="/ao-vivo">Ao vivo</a>
+  </div>
+  <section class="grid">
+    {% for group in groups %}
+      <div class="panel">
+        <h2>Grupo {{ group.letter }}</h2>
+        <ol>
+          {% for row in group.rows %}
+            <li>{{ row.team.name_pt }} · {{ row.stats.points }} pts · SG {{ row.stats.gd }}</li>
+          {% endfor %}
+        </ol>
+      </div>
+    {% endfor %}
+  </section>
+  <section class="band"><h2>Mata-mata oficial</h2></section>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Jogo</th><th>Fase</th><th>Confronto</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for match in ko_matches %}
+          {% set home = teams.get(match.home_team_id) %}
+          {% set away = teams.get(match.away_team_id) %}
+          <tr>
+            <td>#{{ match.match_no }}</td>
+            <td>{{ match.stage }}</td>
+            <td>{{ home.name_pt if home else match.slot_home }} x {{ away.name_pt if away else match.slot_away }}</td>
+            <td>{{ match.status }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

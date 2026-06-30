@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Aposta · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Editar palpite</h1>
+      <p class="muted">Salve os grupos jogo a jogo e selecione as classificadas do mata-mata.</p>
+    </div>
+    <a class="button secondary" href="/minha-aposta/resumo">Ver resumo</a>
+  </div>
+
+  <section class="grid">
+    {% for group, matches in matches_by_group.items() %}
+      <div class="panel">
+        <h2>Grupo {{ group }}</h2>
+        {% for match in matches %}
+          {% set home = teams.get(match.home_team_id) %}
+          {% set away = teams.get(match.away_team_id) %}
+          <form class="match-row" method="post" action="/aposta/grupo/{{ match.id }}">
+            <input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
+            <div>
+              <strong>#{{ match.match_no }}</strong>
+              {{ home.name_pt if home else "A definir" }} x {{ away.name_pt if away else "A definir" }}
+              <br><span class="muted">{{ match.kickoff_utc|brt }}</span>
+            </div>
+            <div class="segmented">
+              <label><input type="radio" name="pick" value="HOME" {% if group_picks.get(match.id) == "HOME" %}checked{% endif %}>1</label>
+              <label><input type="radio" name="pick" value="DRAW" {% if group_picks.get(match.id) == "DRAW" %}checked{% endif %}>X</label>
+              <label><input type="radio" name="pick" value="AWAY" {% if group_picks.get(match.id) == "AWAY" %}checked{% endif %}>2</label>
+              <button type="submit">Salvar</button>
+            </div>
+          </form>
+        {% endfor %}
+        {% if standings.get(group) %}
+          <h3>Classificacao prevista</h3>
+          <ol>
+            {% for row in standings[group] %}
+              <li>{{ row.team_name }} · {{ row.points }} pts{% if row.tied %} · empate{% endif %}</li>
+            {% endfor %}
+          </ol>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </section>
+
+  <section class="band">
+    <h2>Mata-mata</h2>
+    <p class="muted">Selecione ate o limite de cada fase. O ranking pontua pelas selecoes oficiais classificadas.</p>
+  </section>
+  <section class="grid">
+    {% for stage in ko_stage_order %}
+      <form class="panel" method="post" action="/aposta/ko/{{ stage }}">
+        <input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
+        <h3>{{ ko_stage_labels[stage] }} <span class="muted">max. {{ ko_stage_sizes[stage] }}</span></h3>
+        <div class="team-checks">
+          {% for team in teams_list %}
+            <label>
+              <input type="checkbox" name="team_ids" value="{{ team.id }}" {% if team.id in ko_picks.get(stage, []) %}checked{% endif %}>
+              {{ team.name_pt }}
+            </label>
+          {% endfor %}
+        </div>
+        <p><button type="submit">Salvar {{ ko_stage_labels[stage] }}</button></p>
+      </form>
+    {% endfor %}
+  </section>
+{% endblock %}

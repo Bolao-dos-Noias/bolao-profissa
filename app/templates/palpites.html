@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Palpites · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Palpites</h1>
+      <p class="muted">Acesso rapido aos fluxos de aposta e comparacao.</p>
+    </div>
+  </div>
+  <section class="grid">
+    <a class="panel" href="/aposta"><h2>Editar palpite</h2><p>Grupos e mata-mata enquanto permitido.</p></a>
+    <a class="panel" href="/minha-aposta/resumo"><h2>Meu resumo</h2><p>Visao compacta do seu palpite.</p></a>
+    <a class="panel" href="/minha-aposta/completa"><h2>Completo</h2><p>Todos os jogos e selecoes por fase.</p></a>
+    <a class="panel" href="/comparativo/geral"><h2>Comparativo</h2><p>Palpites lado a lado.</p></a>
+  </section>
+{% endblock %}
+

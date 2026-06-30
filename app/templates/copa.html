@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Copa · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Copa</h1>
+      <p class="muted">Dados sincronizados, placares e classificacao oficial.</p>
+    </div>
+  </div>
+  <section class="grid">
+    <a class="panel" href="/ao-vivo"><h2>Ao vivo</h2><p>Placares e jogos por status.</p></a>
+    <a class="panel" href="/ao-vivo/consolidado"><h2>Consolidado</h2><p>Grupos e mata-mata oficiais.</p></a>
+    <a class="panel" href="/ao-vivo/consolidado/completo"><h2>Resultados</h2><p>Tabela completa de partidas.</p></a>
+    <a class="panel" href="/copa/consulta"><h2>Consulta</h2><p>Filtros por selecao, fase e status.</p></a>
+  </section>
+{% endblock %}
+

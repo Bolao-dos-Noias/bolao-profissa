@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Comparativo mata-mata · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Comparativo mata-mata</h1>
+      <p class="muted">Selecoes escolhidas por fase.</p>
+    </div>
+    <div class="tabs">
+      <a href="/comparativo/geral">Geral</a>
+      <a href="/comparativo/1x1">1x1</a>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Fase</th>{% for player in players %}<th>{{ player.nickname }}</th>{% endfor %}</tr>
+      </thead>
+      <tbody>
+        {% for stage in stages %}
+          <tr>
+            <td>{{ stage_labels[stage] }}</td>
+            {% for player in players %}
+              <td>
+                {% for team_id in picks[player.id].get(stage, []) %}
+                  {{ teams[team_id].name_pt if team_id in teams else team_id }}{% if not loop.last %}, {% endif %}
+                {% else %}
+                  <span class="muted">-</span>
+                {% endfor %}
+              </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Login · Bolao Profissa{% endblock %}
+{% block content %}
+  <section class="panel">
+    <h1>Login</h1>
+    {% if registered %}<p class="ok">Cadastro concluido. Entre com nickname e senha.</p>{% endif %}
+    {% if error %}<p class="alert">{{ error }}</p>{% endif %}
+    <form class="stack" method="post">
+      <input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
+      <label>Nickname
+        <input name="nickname" value="{{ nickname_value or '' }}" autocomplete="username" required>
+      </label>
+      <label>Senha
+        <input name="senha" type="password" autocomplete="current-password" required>
+      </label>
+      <button type="submit">Entrar</button>
+    </form>
+    <p><a href="/login/codigo">Tenho codigo de primeiro acesso</a></p>
+  </section>
+{% endblock %}
+

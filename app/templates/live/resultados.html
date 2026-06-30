@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Resultados · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Resultados</h1>
+      <p class="muted">Tabela completa de jogos oficiais.</p>
+    </div>
+    <a class="button secondary" href="/ao-vivo/consolidado">Consolidado</a>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Data</th><th>Fase</th><th>Jogo</th><th>Status</th><th>Placar</th></tr></thead>
+      <tbody>
+        {% for match in matches %}
+          {% set home = teams.get(match.home_team_id) %}
+          {% set away = teams.get(match.away_team_id) %}
+          <tr>
+            <td>{{ match.kickoff_utc|brt }}</td>
+            <td>{{ match.stage }}</td>
+            <td>{{ home.name_pt if home else match.slot_home }} x {{ away.name_pt if away else match.slot_away }}</td>
+            <td>{{ match.status }}</td>
+            <td>{{ match.home_score if match.home_score is not none else "-" }} x {{ match.away_score if match.away_score is not none else "-" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

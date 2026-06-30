@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Comparativo geral · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Comparativo geral</h1>
+      <p class="muted">Palpites de fase de grupos por participante.</p>
+    </div>
+    <div class="tabs">
+      <a href="/comparativo/1x1">1x1</a>
+      <a href="/comparativo/mata-mata">Mata-mata</a>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Jogo</th>
+          {% for player in players %}<th>{{ player.nickname }}</th>{% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for match in matches %}
+          {% set home = teams.get(match.home_team_id) %}
+          {% set away = teams.get(match.away_team_id) %}
+          <tr>
+            <td>{{ match.group_letter }} #{{ match.match_no }} · {{ home.name_pt if home else "-" }} x {{ away.name_pt if away else "-" }}</td>
+            {% for player in players %}
+              <td>{{ picks[player.id].get(match.id)|outcome }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

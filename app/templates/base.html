@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Bolao Profissa{% endblock %}</title>
+    <link rel="icon" href="/static/assets/favicon.svg">
+    <link rel="stylesheet" href="/static/css/app.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="/">
+          <img src="/static/assets/trofeu_copa.png" alt="">
+          <span>Bolao Profissa</span>
+        </a>
+        <nav class="nav" aria-label="principal">
+          {% if user %}
+            <a href="/leaderboard">Ranking</a>
+            <a href="/aposta">Aposta</a>
+            <a href="/minha-aposta/resumo">Meu palpite</a>
+            <a href="/comparativo/geral">Comparativo</a>
+            <a href="/ao-vivo">Ao vivo</a>
+            <a href="/copa">Copa</a>
+            {% if user.is_admin %}<a href="/admin/users">Admin</a>{% endif %}
+            <form method="post" action="/logout">
+              <button type="submit">Sair</button>
+            </form>
+          {% else %}
+            <a href="/login">Entrar</a>
+            <a href="/login/codigo">Primeiro acesso</a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      {% if request.state.missing_count is defined and request.state.missing_count %}
+        <div class="alert">
+          Faltam {{ request.state.missing_count }} itens do seu palpite.
+          {{ request.state.missing_preview|join(", ") }}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="footer">Copa 2026 · projeto didatico de engenharia de software</footer>
+  </body>
+</html>
+

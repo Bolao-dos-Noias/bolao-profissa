@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Palpite · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Palpite de {{ target.nickname }}</h1>
+      <p class="muted">{{ "Resumo" if mode == "resumo" else "Completo" }}</p>
+    </div>
+    <div class="actions">
+      <a class="button secondary" href="/minha-aposta/resumo">Resumo</a>
+      <a class="button secondary" href="/minha-aposta/completa">Completo</a>
+    </div>
+  </div>
+
+  <section class="grid">
+    {% for group, rows in standings.items() %}
+      <div class="panel">
+        <h2>Grupo {{ group }}</h2>
+        <ol>
+          {% for row in rows %}
+            <li>{{ row.team_name }} · {{ row.points }} pts</li>
+          {% endfor %}
+        </ol>
+      </div>
+    {% endfor %}
+  </section>
+
+  {% if mode == "completa" %}
+    <section class="band"><h2>Jogos de grupo</h2></section>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Grupo</th><th>Jogo</th><th>Palpite</th></tr></thead>
+        <tbody>
+          {% for group, matches in matches_by_group.items() %}
+            {% for match in matches %}
+              {% set home = teams.get(match.home_team_id) %}
+              {% set away = teams.get(match.away_team_id) %}
+              <tr>
+                <td>{{ group }}</td>
+                <td>{{ home.name_pt if home else "-" }} x {{ away.name_pt if away else "-" }}</td>
+                <td>{{ group_picks.get(match.id)|outcome }}</td>
+              </tr>
+            {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+
+  <section class="band"><h2>Mata-mata</h2></section>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Fase</th><th>Selecoes</th></tr></thead>
+      <tbody>
+        {% for stage in ko_stage_order %}
+          <tr>
+            <td>{{ ko_stage_labels[stage] }}</td>
+            <td>
+              {% for team_id in ko_picks.get(stage, []) %}
+                {{ teams[team_id].name_pt if team_id in teams else team_id }}{% if not loop.last %}, {% endif %}
+              {% else %}
+                <span class="muted">Sem palpite</span>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

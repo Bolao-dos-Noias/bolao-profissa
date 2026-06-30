@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Comparativo 1x1 · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Comparativo 1x1</h1>
+      <p class="muted">Escolha dois participantes para comparar jogo a jogo.</p>
+    </div>
+    <div class="tabs">
+      <a href="/comparativo/geral">Geral</a>
+      <a href="/comparativo/mata-mata">Mata-mata</a>
+    </div>
+  </div>
+  {% if players %}
+    <form class="panel" method="get">
+      <div class="grid">
+        <label>Participante A
+          <select name="a">
+            {% for player in players %}
+              <option value="{{ player.id }}" {% if first and player.id == first.id %}selected{% endif %}>{{ player.nickname }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>Participante B
+          <select name="b">
+            {% for player in players %}
+              <option value="{{ player.id }}" {% if second and player.id == second.id %}selected{% endif %}>{{ player.nickname }}</option>
+            {% endfor %}
+          </select>
+        </label>
+      </div>
+      <p><button type="submit">Comparar</button></p>
+    </form>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Jogo</th><th>{{ first.nickname }}</th><th>{{ second.nickname }}</th></tr></thead>
+        <tbody>
+          {% for match in matches %}
+            {% set home = teams.get(match.home_team_id) %}
+            {% set away = teams.get(match.away_team_id) %}
+            <tr>
+              <td>{{ home.name_pt if home else "-" }} x {{ away.name_pt if away else "-" }}</td>
+              <td>{{ picks[first.id].get(match.id)|outcome }}</td>
+              <td>{{ picks[second.id].get(match.id)|outcome }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="muted">Sem participantes.</p>
+  {% endif %}
+{% endblock %}
+

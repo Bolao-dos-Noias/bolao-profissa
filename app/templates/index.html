@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Inicio · Bolao Profissa{% endblock %}
+{% block content %}
+  <div class="page-head">
+    <div>
+      <h1>Bolao Profissa</h1>
+      <p class="muted">
+        {% if user %}
+          Ola, {{ user.nickname }}. Deadline: {{ deadline|brt }}.
+        {% else %}
+          Entre com sua conta ou use o codigo de primeiro acesso.
+        {% endif %}
+      </p>
+    </div>
+    <div class="actions">
+      {% if user %}
+        <a class="button" href="/aposta">Editar palpite</a>
+        <a class="button secondary" href="/leaderboard">Ver ranking</a>
+      {% else %}
+        <a class="button" href="/login">Entrar</a>
+        <a class="button secondary" href="/login/codigo">Primeiro acesso</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <section class="grid">
+    <div class="panel">
+      <h2>Participantes</h2>
+      <p class="score">{{ participantes }}</p>
+      <p class="muted">perfis ativos</p>
+    </div>
+    <div class="panel">
+      <h2>Jogos</h2>
+      <p class="score">{{ stats.finished }} / {{ stats.total }}</p>
+      <p class="muted">finalizados</p>
+    </div>
+    <div class="panel">
+      <h2>Ao vivo</h2>
+      <p class="score">{{ stats.live }}</p>
+      <p class="muted">partidas em andamento</p>
+    </div>
+    <div class="panel">
+      <h2>Gols</h2>
+      <p class="score">{{ stats.goals }}</p>
+      <p class="muted">em jogos finalizados</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="actions">
+      <a class="button secondary" href="/minha-aposta/resumo">Meu resumo</a>
+      <a class="button secondary" href="/comparativo/1x1">Comparativo 1x1</a>
+      <a class="button secondary" href="/ao-vivo/consolidado">Consolidado oficial</a>
+      <a class="button secondary" href="/regulamento">Regulamento</a>
+    </div>
+  </section>
+{% endblock %}
+
