@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Bolao da Copa 2026 reconstruido com arquitetura limpa e fluxo de equipe."
 requires-python = ">=3.12"
 dependencies = [
+    "anyio>=4.0,<4.10",
     "fastapi>=0.115",
     "uvicorn[standard]>=0.32",
     "sqlmodel>=0.0.22",
@@ -33,6 +34,10 @@ bolao-seed = "app.cli.seed:main"
 bolao-sync = "app.cli.sync_fixtures:main"
 bolao-recompute-snapshots = "app.cli.recompute_snapshots:main"
 
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [tool.setuptools.packages.find]
 include = ["app*"]
 
@@ -41,8 +46,8 @@ line-length = 100
 target-version = "py312"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "B", "UP", "SIM"]
-ignore = ["E501"]
+select = ["E", "F", "I", "B"]
+ignore = ["E501", "B008"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -63,4 +68,3 @@ disable = [
 
 [tool.pylint.format]
 max-line-length = 100
-

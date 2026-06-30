@@ -5,12 +5,10 @@ Reconstrucao profissional do Bolao dos Noia para a Copa de 2026. O projeto prese
 ## Setup local
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
+UV_CACHE_DIR=.uv-cache UV_PROJECT_ENVIRONMENT=.venv312 uv sync --extra dev
 cp .env.example .env
-python -m app.cli.seed
-uvicorn app.main:app --reload
+UV_CACHE_DIR=.uv-cache UV_PROJECT_ENVIRONMENT=.venv312 uv run python -m app.cli.seed
+UV_CACHE_DIR=.uv-cache UV_PROJECT_ENVIRONMENT=.venv312 uv run uvicorn app.main:app --reload
 ```
 
 App local: `http://127.0.0.1:8000`.
@@ -18,13 +16,13 @@ App local: `http://127.0.0.1:8000`.
 ## Comandos operacionais
 
 ```bash
-pytest
-ruff check .
-pylint app
-radon cc app -s -a
-radon mi app -s
-python -m app.cli.sync_fixtures
-python -m app.cli.recompute_snapshots --apply
+UV_CACHE_DIR=.uv-cache UV_PROJECT_ENVIRONMENT=.venv312 uv run pytest
+UV_CACHE_DIR=.uv-cache UV_PROJECT_ENVIRONMENT=.venv312 uv run ruff check .
+UV_CACHE_DIR=.uv-cache UV_PROJECT_ENVIRONMENT=.venv312 uv run pylint app --fail-under=9.0 --persistent=no
+UV_CACHE_DIR=.uv-cache UV_PROJECT_ENVIRONMENT=.venv312 uv run radon cc app -s -a
+UV_CACHE_DIR=.uv-cache UV_PROJECT_ENVIRONMENT=.venv312 uv run radon mi app -s
+UV_CACHE_DIR=.uv-cache UV_PROJECT_ENVIRONMENT=.venv312 uv run python -m app.cli.sync_fixtures
+UV_CACHE_DIR=.uv-cache UV_PROJECT_ENVIRONMENT=.venv312 uv run python -m app.cli.recompute_snapshots --apply
 ```
 
 ## Fluxo de equipe
@@ -40,4 +38,4 @@ Documentacao principal:
 - [Guia de contribuicao](docs/guia_contribuicao.md)
 - [Metricas](docs/metricas.md)
 - [Inventario da origem](docs/inventario_origem.md)
-
+- [Relatorio final](docs/relatorio_final.md)
