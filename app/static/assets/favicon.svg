@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="ball" cx="38%" cy="34%" r="68%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="55%" stop-color="#F2F2F2"/>
+      <stop offset="100%" stop-color="#9A9A9A"/>
+    </radialGradient>
+    <radialGradient id="shine" cx="32%" cy="26%" r="22%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.95)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF6A8"/>
+      <stop offset="45%" stop-color="#FFDF00"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+    <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="0.8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g transform="translate(32 32)">
+    <circle r="29" fill="url(#ball)" stroke="#1a1a1a" stroke-width="1.5"/>
+    <g fill="#0d0d0d">
+      <polygon points="0,-19 11.2,-10.8 6.8,2.5 -6.8,2.5 -11.2,-10.8"/>
+      <polygon points="0,-29 0,-22 8.5,-15.6 14.6,-22.9 9,-29" opacity="0.92"/>
+      <polygon points="0,-29 -9,-29 -14.6,-22.9 -8.5,-15.6 0,-22" opacity="0.92"/>
+      <polygon points="14.6,-22.9 18.5,-13 13.5,-3.5 8.5,-11.5" opacity="0.9"/>
+      <polygon points="-14.6,-22.9 -18.5,-13 -13.5,-3.5 -8.5,-11.5" opacity="0.9"/>
+      <polygon points="8.5,2.5 16,11.5 9,18 2,11.5" opacity="0.9"/>
+      <polygon points="-8.5,2.5 -16,11.5 -9,18 -2,11.5" opacity="0.9"/>
+      <polygon points="2,11.5 9,18 0,25 -9,18 -2,11.5" opacity="0.92"/>
+    </g>
+    <g stroke="#1a1a1a" stroke-width="0.9" stroke-linecap="round" fill="none" opacity="0.55">
+      <path d="M0,-22 L8.5,-15.6"/>
+      <path d="M0,-22 L-8.5,-15.6"/>
+      <path d="M8.5,-11.5 L13.5,-3.5"/>
+      <path d="M-8.5,-11.5 L-13.5,-3.5"/>
+      <path d="M2,11.5 L8.5,2.5"/>
+      <path d="M-2,11.5 L-8.5,2.5"/>
+    </g>
+    <circle r="29" fill="url(#shine)"/>
+    <text x="0" y="6.5" text-anchor="middle"
+          font-family="Impact, 'Arial Black', sans-serif"
+          font-size="19" font-weight="900"
+          fill="url(#gold)"
+          stroke="#7a5400" stroke-width="0.6"
+          filter="url(#goldGlow)"
+          paint-order="stroke fill">22</text>
+  </g>
+</svg>
