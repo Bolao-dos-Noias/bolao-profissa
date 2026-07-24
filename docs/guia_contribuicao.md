@@ -1,4 +1,4 @@
-# Guia de Contribuicao
+# Guia de Contribuição
 
 ## Branches
 
@@ -15,15 +15,15 @@ Use Conventional Commits: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore
 Autores do projeto:
 
 - Gabriel Di Vanna Camargo `<gabriel_camargo@usp.br>` - tech lead
-- Nicolas Caldas Borsari `<nickborsari@gmail.com>` - produto e validacao
-- Caio Nicoluzzi Vieira `<caionv@usp.br>` - backend/dominio
+- Nicolas Caldas Borsari `<nickborsari@gmail.com>` - produto e validação
+- Caio Nicoluzzi Vieira `<caionv@usp.br>` - backend/domínio
 - Felipe Sousa dos Santos `<felipesousa@usp.br>` - frontend
 
 ## Pull requests
 
-Todo PR deve conter issue vinculada, resumo, checklist de testes, impacto em metricas e screenshots quando alterar UI.
+Todo PR deve conter issue vinculada, resumo, checklist de testes, impacto em métricas e screenshots quando alterar UI.
 
-## Validacao local
+## Validação local
 
 ```bash
 UV_CACHE_DIR=.uv-cache UV_PROJECT_ENVIRONMENT=.venv312 uv sync --extra dev
