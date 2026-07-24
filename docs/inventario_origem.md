@@ -48,7 +48,7 @@ Origem lida em modo somente leitura: `~/Projects/webdev/bolao-dos-noia/`.
 | `app/recompute_snapshots.py` | mover/refatorar | Vira comando CLI. |
 | `app/sync_fixtures.py` | mover/refatorar | Vira comando CLI. |
 | `app/seed.py` | mover/refatorar | Seed oficial permanece, com CLI explicita. |
-| `app/gen_codes.py`, `seed_fake.py`, `seed_delta_demo.py`, `claude_seed.py` | descartar | Scripts temporarios/demo; nao entram no minimo operacional. |
+| `app/gen_codes.py`, `seed_fake.py`, `seed_delta_demo.py` | descartar | Scripts temporarios/demo; nao entram no minimo operacional. |
 | `app/flags.py`, `templates_env.py` | fundir/refatorar | Helpers de flag e Jinja ficam enxutos. |
 
 ### Rotas
@@ -90,7 +90,6 @@ Origem lida em modo somente leitura: `~/Projects/webdev/bolao-dos-noia/`.
 | `data/roster.json` | descartar | Potencialmente sensivel e substituido por admin users. |
 | `docs/schema.md`, `architecture.md`, `api-integration.md`, `frontend-style.md` | refatorar | Conteudo util sera consolidado nos docs novos. |
 | `SCORING.md`, `REGULAMENTO.md` | fundir | Regras entram em docs e pagina de ranking/regulamento. |
-| `CLAUDE.md` | descartar | Documento de ferramenta, nao do produto. |
 | `.env.example`, `pyproject.toml`, `requirements.txt`, `vercel.json` | refatorar | Configuracao alvo usa `pyproject.toml`, `.env.example` e CI. |
 
 ### Testes
@@ -106,7 +105,7 @@ Origem lida em modo somente leitura: `~/Projects/webdev/bolao-dos-noia/`.
 - Ambientes virtuais: `.venv`, `.venv312`.
 - Caches: `.pytest_cache`, `*.egg-info`.
 - Banco local real e artefatos em `data/` que nao sejam seed publico.
-- Scripts temporarios ou de demo: `seed_fake.py`, `seed_delta_demo.py`, `gen_codes.py`, `seed_claude_picks.py`.
+- Scripts temporarios ou de demo: `seed_fake.py`, `seed_delta_demo.py`, `gen_codes.py`.
 - Documentacao de ferramenta ou historica que nao orienta manutencao atual.
 - CSS e JS acumulados sem tela correspondente no alvo.
 

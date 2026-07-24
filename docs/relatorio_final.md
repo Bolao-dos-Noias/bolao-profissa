@@ -22,7 +22,7 @@
 
 - Ambientes virtuais, caches, bancos locais reais, logs e egg-info.
 - `data/roster.json`, por poder conter dados operacionais e por ter sido substituido pelo cadastro via admin.
-- Scripts temporarios/demo como seed fake, delta demo, geracao avulsa de codigos e seed Claude.
+- Scripts temporarios/demo como seed fake, delta demo e geracao avulsa de codigos.
 - CSS acumulado de 6.106 linhas e JS sem fluxo essencial.
 - Templates parciais duplicados e componentes HTMX especificos que aumentavam acoplamento.
 - Router de bracket original com mais de 600 linhas; a intencao foi preservada por servicos e views menores.
