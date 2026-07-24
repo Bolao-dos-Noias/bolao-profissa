@@ -39,6 +39,36 @@ A plataforma oferece:
 - Python 3.12
 - uv
 
+### Instalando o uv
+
+```bash
+# Linux/macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Alternativa via pip, em qualquer SO
+pip install uv
+```
+
+O instalador coloca o binário em `~/.local/bin` (Linux/macOS); garanta que esse diretório esteja no `PATH`. Confirme com `uv --version`.
+
+## Variáveis de ambiente
+
+Copie `.env.example` para `.env` e ajuste os valores. Cada variável:
+
+| Variável | Para que serve |
+| --- | --- |
+| `SECRET_KEY` | Chave usada para assinar sessão e cookies/CSRF. Gere um valor aleatório próprio em qualquer ambiente compartilhado. |
+| `DATABASE_URL` | String de conexão do banco. Por padrão SQLite local (`sqlite:///./data/bolao.db`); também aceita Turso/libsql em produção. |
+| `ADMIN_TOKEN` | Token exigido pelas rotas administrativas chamadas por cron (sync, recompute). |
+| `CRON_SECRET` | Segredo opcional adicional para autenticar chamadas de cron externas. |
+| `ADMIN_PASSWORD` | Senha do usuário admin criado automaticamente no boot da aplicação. |
+| `BOLAO_DEADLINE_UTC` | Data/hora (UTC) do fechamento geral de palpites. |
+| `FOOTBALL_DATA_API_KEY` | Chave da API football-data.org, usada apenas como fallback (ESPN não exige chave). |
+| `APP_ENV` | Ambiente de execução: `dev`, `prod` ou `test`. |
+
 ## Como rodar localmente
 
 ```bash
@@ -74,12 +104,12 @@ O projeto segue boas práticas de engenharia de software, com foco em:
 
 ## Backlog e ciclos de trabalho
 
-O projeto trabalha em ciclos organizados como Milestones do GitHub, cada um com um tema, issues com responsável e critérios de aceite definidos antes do início do trabalho. O histórico completo de ciclos, milestones e issues (passadas e planejadas) está em [docs/issues_milestones.md](docs/issues_milestones.md). O ciclo atual é o **Ciclo 3**, focado em fechar lacunas identificadas em [faltantes.md](faltantes.md) frente ao repositório de referência (bracket/mata-mata, polimento de live/compare/ranking, perfil/admin, testes e documentação).
+O projeto trabalha em ciclos organizados como [Milestones do GitHub](https://github.com/Bolao-dos-Noias/bolao-profissa/milestones), cada um com um tema, issues com responsável e critérios de aceite definidos antes do início do trabalho. O histórico completo de ciclos, milestones e issues está em [docs/issues_milestones.md](docs/issues_milestones.md). Os ciclos em andamento (**Ciclo 1** a **Ciclo 4**) fecham as lacunas identificadas em [faltantes.md](faltantes.md) frente ao repositório de referência: fundamentos e onboarding, bracket/mata-mata e experiência de produto, testes e regras, e refinamento técnico e visual.
 
 ## Como contribuir
 
 1. Escolha ou abra uma issue vinculada a um milestone do ciclo atual.
-2. Crie uma branch a partir de `main` seguindo o padrão `tipo/<issue>-descricao-curta`, por exemplo `feature/29-bracket-mata-mata` ou `docs/26-readme-onboarding`. Tipos aceitos: `feature`, `fix`, `refactor`, `docs`, `chore`.
+2. Crie uma branch a partir de `main` seguindo o padrão `tipo/<issue>-descricao-curta`, por exemplo `feature/6-bracket-mata-mata` ou `docs/3-readme-onboarding`. Tipos aceitos: `feature`, `fix`, `refactor`, `docs`, `chore`.
 3. Faça commits no padrão [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`, `ci:`).
 4. Rode a [validação local](#como-validar-o-projeto) antes de abrir o PR.
 5. Abra o PR usando o template do repositório: ele deve vincular a issue, descrever o que mudou, listar os testes/validações realizados e indicar o impacto esperado (inclua screenshots se alterar UI).

@@ -49,47 +49,45 @@
 - #24 `refactor: expor fluxos recuperados na interface minima` - Felipe
 - #25 `docs: atualizar relatorio de triagem e metricas` - Nicolas
 
-## Ciclo 3 - Fechar lacunas frente ao repositorio de referencia
+## Ciclos 1-4 - Fechar lacunas frente ao repositorio de referencia
 
-Baseado no levantamento de `faltantes.md` (comparacao com o repositorio de referencia `bolao-dos-noia`). Segue o mesmo padrao dos ciclos anteriores: cada Milestone do GitHub agrupa um tema e cada issue tem responsavel, reviewer, labels e criterios de aceite definidos antes de comecar o trabalho.
+Baseado no levantamento de `faltantes.md` (comparacao com o repositorio de referencia `bolao-dos-noia`). Estes 4 ciclos sao Milestones reais, ja criadas no GitHub (`Bolao-dos-Noias/bolao-profissa`), substituindo o antigo milestone unico "Ciclo 0 - Inventario e Planejamento" (fechado). Cada Milestone agrupa um tema e cada issue tem responsavel (assignee), reviewer, labels e criterios de aceite.
 
-Numeracao provisoria, sequencial ao historico atual (#1 a #25). Os numeros reais serao atribuidos pelo GitHub no momento da criacao de cada issue.
+As issues #3 e #4 ja existiam no GitHub (criadas antes deste levantamento, dentro do extinto "Ciclo 0") e foram reaproveitadas - apenas movidas de milestone e, no caso da #4, com criterios de aceite atualizados - em vez de duplicadas.
 
-### Milestone 7 - Fundamentos e Onboarding
+### [Ciclo 1 - Fundamentos e Onboarding](https://github.com/Bolao-dos-Noias/bolao-profissa/milestone/2)
 
-- #26 `docs: documentar onboarding e README do projeto` - Nicolas
-- #27 `ci: reforcar pipeline de qualidade` - Gabriel
-- #28 `chore: criar seed e fixtures operacionais para desenvolvimento` - Caio
+- [#3](https://github.com/Bolao-dos-Noias/bolao-profissa/issues/3) `docs: documentar onboarding e README do projeto` - Nicolas
+- [#4](https://github.com/Bolao-dos-Noias/bolao-profissa/issues/4) `ci: reforcar pipeline de qualidade` - Gabriel
+- [#5](https://github.com/Bolao-dos-Noias/bolao-profissa/issues/5) `chore: criar seed e fixtures operacionais para desenvolvimento` - Caio
 
-### Milestone 8 - Experiencia do Produto
+### [Ciclo 2 - Experiencia do Produto](https://github.com/Bolao-dos-Noias/bolao-profissa/milestone/3)
 
-- #29 `feat: implementar fluxo de bracket e mata-mata` - Caio
-- #30 `refactor: melhorar experiencia de palpites e navegacao` - Felipe
-- #31 `refactor: polir telas de live, compare e ranking` - Felipe
+- [#6](https://github.com/Bolao-dos-Noias/bolao-profissa/issues/6) `feat: implementar fluxo de bracket e mata-mata` - Caio
+- [#7](https://github.com/Bolao-dos-Noias/bolao-profissa/issues/7) `refactor: melhorar experiencia de palpites e navegacao` - Felipe
+- [#8](https://github.com/Bolao-dos-Noias/bolao-profissa/issues/8) `refactor: polir telas de live, compare e ranking` - Felipe
 
-### Milestone 9 - Operacao, Regras e Qualidade
+### [Ciclo 3 - Operacao, Regras e Qualidade](https://github.com/Bolao-dos-Noias/bolao-profissa/milestone/4)
 
-- #32 `test: expandir cobertura para fluxos criticos` - Caio
-- #33 `docs: documentar regras de pontuacao e regulamento` - Nicolas
-- #34 `refactor: melhorar fluxo de perfil e administracao` - Gabriel
+- [#9](https://github.com/Bolao-dos-Noias/bolao-profissa/issues/9) `test: expandir cobertura para fluxos criticos` - Caio
+- [#10](https://github.com/Bolao-dos-Noias/bolao-profissa/issues/10) `docs: documentar regras de pontuacao e regulamento` - Nicolas
+- [#11](https://github.com/Bolao-dos-Noias/bolao-profissa/issues/11) `refactor: melhorar fluxo de perfil e administracao` - Gabriel
 
-### Milestone 10 - Refinamento Tecnico e Visual
+### [Ciclo 4 - Refinamento Tecnico e Visual](https://github.com/Bolao-dos-Noias/bolao-profissa/milestone/5)
 
-- #35 `refactor: revisar metricas, performance e manutencao tecnica` - Gabriel
-- #36 `chore: polir visual e assets do projeto` - Felipe
+- [#12](https://github.com/Bolao-dos-Noias/bolao-profissa/issues/12) `refactor: revisar metricas, performance e manutencao tecnica` - Gabriel
+- [#13](https://github.com/Bolao-dos-Noias/bolao-profissa/issues/13) `chore: polir visual e assets do projeto` - Felipe
 
-### Detalhamento das issues do Ciclo 3
-
-Pronto para copiar na criacao manual de cada issue no GitHub (titulo, labels, descricao, criterios de aceite).
+### Detalhamento das issues
 
 ---
 
-#### #26 - docs: documentar onboarding e README do projeto
+#### #3 - docs: documentar onboarding e README do projeto
 
-**Milestone:** 7 - Fundamentos e Onboarding
+**Milestone:** Ciclo 1 - Fundamentos e Onboarding
 **Responsavel:** Nicolas
 **Reviewer:** Gabriel
-**Labels:** documentation, enhancement
+**Labels:** documentation
 
 **Descricao**
 Consolidar a documentacao inicial do projeto para facilitar a entrada de novos participantes e padronizar o fluxo de contribuicao.
@@ -106,12 +104,12 @@ Consolidar a documentacao inicial do projeto para facilitar a entrada de novos p
 
 ---
 
-#### #27 - ci: reforcar pipeline de qualidade
+#### #4 - ci: reforcar pipeline de qualidade
 
-**Milestone:** 7 - Fundamentos e Onboarding
+**Milestone:** Ciclo 1 - Fundamentos e Onboarding
 **Responsavel:** Gabriel
 **Reviewer:** Gabriel
-**Labels:** ci, quality
+**Labels:** ci/cd, quality
 
 **Descricao**
 O pipeline em `.github/workflows/ci.yml` ja roda ruff, pytest, pylint e radon a cada PR. Falta fechar o que garante que ele seja, de fato, um portao de qualidade: cobertura minima obrigatoria, visibilidade do status no README e protecao de branch exigindo o check antes do merge.
@@ -128,9 +126,9 @@ O pipeline em `.github/workflows/ci.yml` ja roda ruff, pytest, pylint e radon a 
 
 ---
 
-#### #28 - chore: criar seed e fixtures operacionais para desenvolvimento
+#### #5 - chore: criar seed e fixtures operacionais para desenvolvimento
 
-**Milestone:** 7 - Fundamentos e Onboarding
+**Milestone:** Ciclo 1 - Fundamentos e Onboarding
 **Responsavel:** Caio
 **Reviewer:** Gabriel
 **Labels:** chore, backend
@@ -150,9 +148,9 @@ Facilitar a execucao local com dados realistas e cenarios pre-populados para des
 
 ---
 
-#### #29 - feat: implementar fluxo de bracket e mata-mata
+#### #6 - feat: implementar fluxo de bracket e mata-mata
 
-**Milestone:** 8 - Experiencia do Produto
+**Milestone:** Ciclo 2 - Experiencia do Produto
 **Responsavel:** Caio
 **Reviewer:** Gabriel
 **Labels:** feature, backend
@@ -173,9 +171,9 @@ Maior lacuna identificada em `faltantes.md` frente ao repositorio de referencia:
 
 ---
 
-#### #30 - refactor: melhorar experiencia de palpites e navegacao
+#### #7 - refactor: melhorar experiencia de palpites e navegacao
 
-**Milestone:** 8 - Experiencia do Produto
+**Milestone:** Ciclo 2 - Experiencia do Produto
 **Responsavel:** Felipe
 **Reviewer:** Gabriel
 **Labels:** frontend, ux
@@ -195,9 +193,9 @@ Tornar o fluxo de palpites, ranking e consulta mais claro e consistente para o u
 
 ---
 
-#### #31 - refactor: polir telas de live, compare e ranking
+#### #8 - refactor: polir telas de live, compare e ranking
 
-**Milestone:** 8 - Experiencia do Produto
+**Milestone:** Ciclo 2 - Experiencia do Produto
 **Responsavel:** Felipe
 **Reviewer:** Gabriel
 **Labels:** frontend, enhancement
@@ -218,9 +216,9 @@ Deixar as telas principais mais proximas do visual e da usabilidade esperados pa
 
 ---
 
-#### #32 - test: expandir cobertura para fluxos criticos
+#### #9 - test: expandir cobertura para fluxos criticos
 
-**Milestone:** 9 - Operacao, Regras e Qualidade
+**Milestone:** Ciclo 3 - Operacao, Regras e Qualidade
 **Responsavel:** Caio
 **Reviewer:** Gabriel
 **Labels:** tests, backend
@@ -240,9 +238,9 @@ Cobrir os cenarios de autenticacao, workflow, palpites, ranking e exportacao com
 
 ---
 
-#### #33 - docs: documentar regras de pontuacao e regulamento
+#### #10 - docs: documentar regras de pontuacao e regulamento
 
-**Milestone:** 9 - Operacao, Regras e Qualidade
+**Milestone:** Ciclo 3 - Operacao, Regras e Qualidade
 **Responsavel:** Nicolas
 **Reviewer:** Gabriel
 **Labels:** documentation, rules
@@ -262,9 +260,9 @@ Deixar as regras do bolao explicitas e faceis de revisar para participantes e co
 
 ---
 
-#### #34 - refactor: melhorar fluxo de perfil e administracao
+#### #11 - refactor: melhorar fluxo de perfil e administracao
 
-**Milestone:** 9 - Operacao, Regras e Qualidade
+**Milestone:** Ciclo 3 - Operacao, Regras e Qualidade
 **Responsavel:** Gabriel
 **Reviewer:** Gabriel
 **Labels:** enhancement, backend
@@ -285,9 +283,9 @@ Reforcar os fluxos de perfil, seguranca e operacoes administrativas para reduzir
 
 ---
 
-#### #35 - refactor: revisar metricas, performance e manutencao tecnica
+#### #12 - refactor: revisar metricas, performance e manutencao tecnica
 
-**Milestone:** 10 - Refinamento Tecnico e Visual
+**Milestone:** Ciclo 4 - Refinamento Tecnico e Visual
 **Responsavel:** Gabriel
 **Reviewer:** Gabriel
 **Labels:** refactor, quality
@@ -308,9 +306,9 @@ Reduzir complexidade e melhorar a manutenibilidade do codigo em pontos criticos 
 
 ---
 
-#### #36 - chore: polir visual e assets do projeto
+#### #13 - chore: polir visual e assets do projeto
 
-**Milestone:** 10 - Refinamento Tecnico e Visual
+**Milestone:** Ciclo 4 - Refinamento Tecnico e Visual
 **Responsavel:** Felipe
 **Reviewer:** Gabriel
 **Labels:** frontend, design
@@ -341,7 +339,7 @@ Reaproveitando o que ja foi usado nos ciclos anteriores. Criar as que ainda nao 
 | `refactor` | Mudanca interna sem alterar comportamento externo |
 | `documentation` | Documentacao (README, docs/, regulamento) |
 | `tests` | Testes automatizados |
-| `ci` | Pipeline e automacao de qualidade |
+| `ci/cd` | Pipeline e automacao de qualidade |
 | `quality` | Metricas de qualidade (cobertura, lint, complexidade) |
 | `chore` | Tarefa operacional sem impacto direto de produto |
 | `backend` | Dominio, servicos, persistencia, rotas |
@@ -350,9 +348,9 @@ Reaproveitando o que ja foi usado nos ciclos anteriores. Criar as que ainda nao 
 | `design` | Identidade visual e assets |
 | `rules` | Regras de pontuacao e regulamento do bolao |
 
-### Prioridade sugerida do Ciclo 3
+### Ordem dos ciclos
 
-1. Fundamentos e onboarding (Milestone 7)
-2. Experiencia do produto (Milestone 8)
-3. Operacao e documentacao (Milestone 9)
-4. Refinamento tecnico e visual (Milestone 10)
+1. Ciclo 1 - Fundamentos e onboarding
+2. Ciclo 2 - Experiencia do produto
+3. Ciclo 3 - Operacao e documentacao
+4. Ciclo 4 - Refinamento tecnico e visual
