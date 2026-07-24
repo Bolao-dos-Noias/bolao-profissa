@@ -51,7 +51,7 @@
 
 ## Ciclos 1-4 - Fechar lacunas frente ao repositorio de referencia
 
-Baseado no levantamento de `faltantes.md` (comparacao com o repositorio de referencia `bolao-dos-noia`). Estes 4 ciclos sao Milestones reais, ja criadas no GitHub (`Bolao-dos-Noias/bolao-profissa`), substituindo o antigo milestone unico "Ciclo 0 - Inventario e Planejamento" (fechado). Cada Milestone agrupa um tema e cada issue tem responsavel (assignee), reviewer, labels e criterios de aceite.
+Baseado na comparacao com o repositorio de referencia `bolao-dos-noia`. Estes 4 ciclos sao Milestones reais, ja criadas no GitHub (`Bolao-dos-Noias/bolao-profissa`), substituindo o antigo milestone unico "Ciclo 0 - Inventario e Planejamento" (fechado). Cada Milestone agrupa um tema e cada issue tem responsavel (assignee), reviewer, labels e criterios de aceite.
 
 As issues #3 e #4 ja existiam no GitHub (criadas antes deste levantamento, dentro do extinto "Ciclo 0") e foram reaproveitadas - apenas movidas de milestone e, no caso da #4, com criterios de aceite atualizados - em vez de duplicadas.
 
@@ -156,7 +156,7 @@ Facilitar a execucao local com dados realistas e cenarios pre-populados para des
 **Labels:** feature, backend
 
 **Descricao**
-Maior lacuna identificada em `faltantes.md` frente ao repositorio de referencia: adicionar o fluxo de bracket e mata-mata com interface e logica compativel com as regras do bolao.
+Maior lacuna frente ao repositorio de referencia: adicionar o fluxo de bracket e mata-mata com interface e logica compativel com as regras do bolao.
 
 **Criterios de aceite**
 - [ ] Interface para visualizacao do bracket

@@ -104,7 +104,7 @@ O projeto segue boas práticas de engenharia de software, com foco em:
 
 ## Backlog e ciclos de trabalho
 
-O projeto trabalha em ciclos organizados como [Milestones do GitHub](https://github.com/Bolao-dos-Noias/bolao-profissa/milestones), cada um com um tema, issues com responsável e critérios de aceite definidos antes do início do trabalho. O histórico completo de ciclos, milestones e issues está em [docs/issues_milestones.md](docs/issues_milestones.md). Os ciclos em andamento (**Ciclo 1** a **Ciclo 4**) fecham as lacunas identificadas em [faltantes.md](faltantes.md) frente ao repositório de referência: fundamentos e onboarding, bracket/mata-mata e experiência de produto, testes e regras, e refinamento técnico e visual.
+O projeto trabalha em ciclos organizados como [Milestones do GitHub](https://github.com/Bolao-dos-Noias/bolao-profissa/milestones), cada um com um tema, issues com responsável e critérios de aceite definidos antes do início do trabalho. O histórico completo de ciclos, milestones e issues está em [docs/issues_milestones.md](docs/issues_milestones.md). Os ciclos em andamento (**Ciclo 1** a **Ciclo 4**) fecham as lacunas frente ao repositório de referência: fundamentos e onboarding, bracket/mata-mata e experiência de produto, testes e regras, e refinamento técnico e visual.
 
 ## Como contribuir
 
