@@ -2,13 +2,13 @@
 
 ## Camadas
 
-- `app/routers`: entrada HTTP, validacao leve e renderizacao de templates.
-- `app/services`: casos de uso, consultas coordenadas e transacoes.
-- `app/domain`: regras puras de classificacao, bracket, pontuacao e snapshots.
-- `app/repositories`: consultas persistentes compartilhadas quando reduzem duplicacao.
+- `app/routers`: entrada HTTP, validacão leve e renderização de templates.
+- `app/services`: casos de uso, consultas coordenadas e transações.
+- `app/domain`: regras puras de classificação, bracket, pontuação e snapshots.
+- `app/repositories`: consultas persistentes compartilhadas quando reduzem duplicação.
 - `app/cli`: comandos operacionais para seed, sync e recompute.
-- `app/templates`: Jinja com logica minima.
-- `app/static`: CSS e JavaScript reduzidos ao necessario.
+- `app/templates`: Jinja com lógica mínima.
+- `app/static`: CSS e JavaScript reduzidos ao necessário.
 
 ```mermaid
 flowchart TD
@@ -25,15 +25,15 @@ flowchart TD
 
 ## Fonte de verdade da pontuacao
 
-`app/domain/pontuacao.py` define pesos, ordenacao, desempates e serializacao de snapshots. `app/services/ranking.py` converte dados persistidos para essa regra. Ranking, comparativos, live e recompute consomem o mesmo servico.
+`app/domain/pontuacao.py` define pesos, ordenação, desempates e serialização de snapshots. `app/services/ranking.py` converte dados persistidos para essa regra. Ranking, comparativos, live e recompute consomem o mesmo servico.
 
 ## Banco
 
-O alvo preserva SQLModel, SQLite local e Turso/libsql. Dados sensiveis ficam fora do Git e sao configurados por `.env`.
+O alvo preserva SQLModel, SQLite local e Turso/libsql. Dados sensíveis ficam fora do Git e são configurados por `.env`.
 
 ## Modelagem de dados
 
-Todas as tabelas sao definidas em `app/models.py` com SQLModel. Nao ha um unico agregado central: `User`, `Team` e `Match` sao as entidades base, e cada tipo de palpite tem sua propria tabela normalizada.
+Todas as tabelas são definidas em `app/models.py` com SQLModel. Não há um único agregado central: `User`, `Team` e `Match` são as entidades base, e cada tipo de palpite tem sua própria tabela normalizada.
 
 ### Entidades base
 
@@ -56,7 +56,7 @@ erDiagram
     }
 ```
 
-Participante do bolao. `nickname` e o identificador publico (usado em URLs de palpite/comparacao). `email`, `username`, `roster_slug` e `invite_code` sao opcionais, suportando os diferentes fluxos de onboarding. `edit_unlock_until` reabre a edicao de palpites apos o fechamento geral para um usuario especifico.
+Participante do bolão. `nickname` e o identificador público (usado em URLs de palpite/comparação). `email`, `username`, `roster_slug` e `invite_code` são opcionais, suportando os diferentes fluxos de onboarding. `edit_unlock_until` reabre a edição de palpites após o fechamento geral para um usuário específico.
 
 #### `Team` (`teams`)
 
@@ -71,7 +71,7 @@ erDiagram
     }
 ```
 
-Selecao da Copa. `fifa_code` e a chave natural usada para casar com a API da ESPN durante a sincronizacao; `group_letter` associa o time a um grupo (A-H).
+Seleção da Copa. `fifa_code` e a chave natural usada para casar com a API da ESPN durante a sincronização; `group_letter` associa o time a um grupo (A-H).
 
 #### `Match` (`matches`)
 
@@ -99,11 +99,11 @@ erDiagram
     }
 ```
 
-Partida, tanto de grupo quanto de mata-mata. `stage` distingue `GROUP` de `R32`, `R16`, `QF`, `SF`, `F` e `CHAMPION`; `group_letter`/`match_no` so fazem sentido na fase de grupos. `home_team_id`/`away_team_id` ficam nulos antes da definicao do chaveamento, por isso `slot_home`/`slot_away` guardam o placeholder textual (ex.: "1o Grupo A"). `external_id` e a chave de casamento com a ESPN. `status`, `*_score`, `result` e `live_*` sao atualizados por `app/services/sincronizacao.py`.
+Partida, tanto de grupo quanto de mata-mata. `stage` distingue `GROUP` de `R32`, `R16`, `QF`, `SF`, `F` e `CHAMPION`; `group_letter`/`match_no` só fazem sentido na fase de grupos. `home_team_id`/`away_team_id` ficam nulos antes da definição do chaveamento, por isso `slot_home`/`slot_away` guardam o placeholder textual (ex.: "1o Grupo A"). `external_id` e a chave de casamento com a ESPN. `status`, `*_score`, `result` e `live_*` são atualizados por `app/services/sincronizacao.py`.
 
 ### Palpites (uma tabela por tipo de aposta)
 
-Cada fase do bolao tem regra de pontuacao propria (`app/domain/pontuacao.py`) e granularidade diferente: grupo e por jogo, desempate e por grupo inteiro, terceiros e global, mata-mata e por fase ou por confronto. Por isso cada tipo de palpite vive em sua propria tabela.
+Cada fase do bolão tem regra de pontuação própria (`app/domain/pontuacao.py`) e granularidade diferente: grupo e por jogo, desempate e por grupo inteiro, terceiros e global, mata-mata e por fase ou por confronto. Por isso, cada tipo de palpite vive em sua própria tabela.
 
 #### `BetGroup` (`bets_group`)
 
@@ -133,7 +133,7 @@ erDiagram
     }
 ```
 
-Desempate de classificacao dentro de um grupo; `ordered_team_ids` guarda a ordem completa dos times do grupo serializada como string. Unicidade composta em `(user_id, group_letter)`.
+Desempate de classificação dentro de um grupo; `ordered_team_ids` guarda a ordem completa dos times do grupo serializada como string. Unicidade composta em `(user_id, group_letter)`.
 
 #### `BetThirdsOrder` (`bets_thirds_order`)
 
@@ -146,7 +146,7 @@ erDiagram
     }
 ```
 
-Ordenacao dos melhores terceiros colocados entre todos os grupos. A chave primaria e o proprio `user_id` (um registro por usuario, nao por grupo).
+Ordenação dos melhores terceiros colocados entre todos os grupos. A chave primária e o próprio `user_id` (um registro por usuário, não por grupo).
 
 #### `BetKnockout` (`bets_knockout`)
 
@@ -161,7 +161,7 @@ erDiagram
     }
 ```
 
-Palpite de quais times avancam em uma fase de mata-mata. Unicidade composta em `(user_id, stage, team_id)` - o conjunto de linhas com o mesmo `(user_id, stage)` representa os classificados escolhidos para aquela fase.
+Palpite de quais times avançam em uma fase de mata-mata. Unicidade composta em `(user_id, stage, team_id)` - o conjunto de linhas com o mesmo `(user_id, stage)` representa os classificados escolhidos para aquela fase.
 
 #### `BetMatch` (`bets_match`)
 
@@ -176,9 +176,9 @@ erDiagram
     }
 ```
 
-Palpite de vencedor de um confronto de mata-mata ja definido. Unicidade composta em `(user_id, match_id)`.
+Palpite de vencedor de um confronto de mata-mata já definido. Unicidade composta em `(user_id, match_id)`.
 
-### Historico e configuracao
+### Histórico e configuração
 
 #### `LeaderboardSnapshot` (`leaderboard_snapshots`)
 
@@ -192,7 +192,7 @@ erDiagram
     }
 ```
 
-Foto do ranking em um instante, tirada a cada jogo processado (`match_id` aponta para o jogo que disparou a atualizacao). `ordering` serializa posicoes e pontuacao de todos os usuarios naquele momento (`serialize_snapshot_ordering`/`parse_snapshot` em `app/services/ranking.py`), permitindo montar o grafico de evolucao do ranking sem recalcular tudo a cada leitura.
+Foto do ranking em um instante, tirada a cada jogo processado (`match_id` aponta para o jogo que disparou a atualização). `ordering` serializa posições e pontuação de todos os usuários naquele momento (`serialize_snapshot_ordering`/`parse_snapshot` em `app/services/ranking.py`), permitindo montar o gráfico de evolução do ranking sem recalcular tudo a cada leitura.
 
 #### `Setting` (`settings`)
 
@@ -204,11 +204,11 @@ erDiagram
     }
 ```
 
-Tabela chave-valor generica para configuracao operacional persistida (ex.: flags de estado do workflow), separada das variaveis de `.env`.
+Tabela chave-valor genérica para configuração operacional persistida (ex.: flags de estado do workflow), separada das variáveis de `.env`.
 
 ### Relacionamentos
 
-Visao geral de como as entidades acima se conectam (campos completos de cada uma estao nos diagramas por entidade anteriores):
+Visão geral de como as entidades acima se conectam (campos completos de cada uma estão nos diagramas por entidade anteriores):
 
 ```mermaid
 erDiagram
@@ -225,5 +225,5 @@ erDiagram
     MATCH ||--o{ LEADERBOARD_SNAPSHOT : origina
 ```
 
-Nao ha cascade delete configurado: a integridade entre `users`/`teams`/`matches` e as tabelas de aposta e responsabilidade da camada de servico (`app/services/palpites.py`), que sempre escreve/atualiza pelo par de chaves unico em vez de duplicar linhas.
+Não há cascade delete configurado: a integridade entre `users`/`teams`/`matches` e as tabelas de aposta e responsabilidade da camada de serviço (`app/services/palpites.py`), que sempre escreve/atualiza pelo par de chaves único em vez de duplicar linhas.
 
