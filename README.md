@@ -1,5 +1,7 @@
 # Bolão Profissa
 
+[![CI](https://github.com/Bolao-dos-Noias/bolao-profissa/actions/workflows/ci.yml/badge.svg)](https://github.com/Bolao-dos-Noias/bolao-profissa/actions/workflows/ci.yml)
+
 Bolão Profissa é uma aplicação web para organizar e acompanhar um bolão da Copa do Mundo de 2026 com foco em usabilidade, regras de pontuação claras, ranking público e uma arquitetura mais profissional do que a versão anterior.
 
 O projeto foi reconstruído com uma abordagem mais limpa e sustentável, separando responsabilidades entre rotas, serviços, domínio, modelos e templates. A ideia é preservar o comportamento do produto original, mas com melhores práticas de engenharia de software, testes e documentação.
@@ -70,12 +72,20 @@ O projeto segue boas práticas de engenharia de software, com foco em:
 - documentação operacional e de contribuição;
 - fluxo de trabalho com branches, commits semânticos e pull requests.
 
-## Fluxo de contribuição
+## Backlog e ciclos de trabalho
 
-- Branch principal: main
-- Branches de trabalho: feature/<issue>-descricao, fix/<issue>-descricao, refactor/<issue>-descricao, docs/<issue>-descricao, chore/<issue>-descricao
-- Commits: Conventional Commits
-- PRs: devem vincular issue, listar testes realizados e indicar impacto esperado
+O projeto trabalha em ciclos organizados como Milestones do GitHub, cada um com um tema, issues com responsável e critérios de aceite definidos antes do início do trabalho. O histórico completo de ciclos, milestones e issues (passadas e planejadas) está em [docs/issues_milestones.md](docs/issues_milestones.md). O ciclo atual é o **Ciclo 3**, focado em fechar lacunas identificadas em [faltantes.md](faltantes.md) frente ao repositório de referência (bracket/mata-mata, polimento de live/compare/ranking, perfil/admin, testes e documentação).
+
+## Como contribuir
+
+1. Escolha ou abra uma issue vinculada a um milestone do ciclo atual.
+2. Crie uma branch a partir de `main` seguindo o padrão `tipo/<issue>-descricao-curta`, por exemplo `feature/29-bracket-mata-mata` ou `docs/26-readme-onboarding`. Tipos aceitos: `feature`, `fix`, `refactor`, `docs`, `chore`.
+3. Faça commits no padrão [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`, `ci:`).
+4. Rode a [validação local](#como-validar-o-projeto) antes de abrir o PR.
+5. Abra o PR usando o template do repositório: ele deve vincular a issue, descrever o que mudou, listar os testes/validações realizados e indicar o impacto esperado (inclua screenshots se alterar UI).
+6. Todo PR passa pelo CI (ruff, pytest, pylint, radon) e precisa de revisão do tech lead antes do merge.
+
+Guia completo de contribuição, papéis e convenções: [docs/guia_contribuicao.md](docs/guia_contribuicao.md).
 
 ## Autores do projeto
 
