@@ -132,7 +132,6 @@ Resolvido com a publicação em Vercel + Turso (ver [deploy](docs/deploy.md)):
 
 Ainda pendentes:
 
-- `CLAUDE.md`
 - `SCORING.md`
 - `REGULAMENTO.md`
 - `bolao_dos_noia.egg-info/*`
@@ -145,14 +144,12 @@ Ainda pendentes:
 - `data/roster.json`
 - `app/seed_delta_demo.py`
 - `app/seed_fake.py`
-- `app/claude_seed.py`
 - `app/gen_codes.py`
 - `app/recompute_snapshots.py`
 
 ### Scripts auxiliares
 
 - `scripts/apply_prod_copy_to_turso.sh`
-- `scripts/seed_claude_picks.py`
 
 ### Testes e cobertura
 
