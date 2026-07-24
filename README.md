@@ -127,6 +127,7 @@ Guia completo de contribuição, papéis e convenções: [docs/guia_contribuicao
 ## Documentação principal
 
 - [Arquitetura](docs/arquitetura.md)
+- [Deploy em produção](docs/deploy.md)
 - [Guia de contribuição](docs/guia_contribuicao.md)
 - [Métricas](docs/metricas.md)
 - [Inventário da origem](docs/inventario_origem.md)

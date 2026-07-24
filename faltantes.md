@@ -122,12 +122,19 @@ Isso sugere divergência ainda possível em:
 
 ### Operação e empacotamento
 
-- `vercel.json`
-- `requirements.txt`
+Resolvido com a publicação em Vercel + Turso (ver [deploy](docs/deploy.md)):
+
+- `vercel.json` — criado, restrito ao `maxDuration` da Function;
+- `requirements.txt` — dispensado: a Vercel instala do `pyproject.toml`, que segue como
+  fonte única de verdade das dependências;
+- `api/index.py` — dispensado: o preset FastAPI detecta `app/main.py` sozinho, e um
+  segundo entrypoint válido apenas geraria ambiguidade no build.
+
+Ainda pendentes:
+
 - `CLAUDE.md`
 - `SCORING.md`
 - `REGULAMENTO.md`
-- `api/index.py`
 - `bolao_dos_noia.egg-info/*`
 
 ### Dados e seed
