@@ -1,5 +1,7 @@
 # Bolão Profissa
 
+[![CI](https://github.com/Bolao-dos-Noias/bolao-profissa/actions/workflows/ci.yml/badge.svg)](https://github.com/Bolao-dos-Noias/bolao-profissa/actions/workflows/ci.yml)
+
 Bolão Profissa é uma aplicação web para organizar e acompanhar um bolão da Copa do Mundo de 2026 com foco em usabilidade, regras de pontuação claras, ranking público e uma arquitetura mais profissional do que a versão anterior.
 
 O projeto foi reconstruído com uma abordagem mais limpa e sustentável, separando responsabilidades entre rotas, serviços, domínio, modelos e templates. A ideia é preservar o comportamento do produto original, mas com melhores práticas de engenharia de software, testes e documentação.
@@ -37,6 +39,36 @@ A plataforma oferece:
 - Python 3.12
 - uv
 
+### Instalando o uv
+
+```bash
+# Linux/macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Alternativa via pip, em qualquer SO
+pip install uv
+```
+
+O instalador coloca o binário em `~/.local/bin` (Linux/macOS); garanta que esse diretório esteja no `PATH`. Confirme com `uv --version`.
+
+## Variáveis de ambiente
+
+Copie `.env.example` para `.env` e ajuste os valores. Cada variável:
+
+| Variável | Para que serve |
+| --- | --- |
+| `SECRET_KEY` | Chave usada para assinar sessão e cookies/CSRF. Gere um valor aleatório próprio em qualquer ambiente compartilhado. |
+| `DATABASE_URL` | String de conexão do banco. Por padrão SQLite local (`sqlite:///./data/bolao.db`); também aceita Turso/libsql em produção. |
+| `ADMIN_TOKEN` | Token exigido pelas rotas administrativas chamadas por cron (sync, recompute). |
+| `CRON_SECRET` | Segredo opcional adicional para autenticar chamadas de cron externas. |
+| `ADMIN_PASSWORD` | Senha do usuário admin criado automaticamente no boot da aplicação. |
+| `BOLAO_DEADLINE_UTC` | Data/hora (UTC) do fechamento geral de palpites. |
+| `FOOTBALL_DATA_API_KEY` | Chave da API football-data.org, usada apenas como fallback (ESPN não exige chave). |
+| `APP_ENV` | Ambiente de execução: `dev`, `prod` ou `test`. |
+
 ## Como rodar localmente
 
 ```bash
@@ -70,12 +102,20 @@ O projeto segue boas práticas de engenharia de software, com foco em:
 - documentação operacional e de contribuição;
 - fluxo de trabalho com branches, commits semânticos e pull requests.
 
-## Fluxo de contribuição
+## Backlog e ciclos de trabalho
 
-- Branch principal: main
-- Branches de trabalho: feature/<issue>-descricao, fix/<issue>-descricao, refactor/<issue>-descricao, docs/<issue>-descricao, chore/<issue>-descricao
-- Commits: Conventional Commits
-- PRs: devem vincular issue, listar testes realizados e indicar impacto esperado
+O projeto trabalha em ciclos organizados como [Milestones do GitHub](https://github.com/Bolao-dos-Noias/bolao-profissa/milestones), cada um com um tema, issues com responsável e critérios de aceite definidos antes do início do trabalho. O histórico completo de ciclos, milestones e issues está em [docs/issues_milestones.md](docs/issues_milestones.md). Os ciclos em andamento (**Ciclo 1** a **Ciclo 4**) fecham as lacunas frente ao repositório de referência: fundamentos e onboarding, bracket/mata-mata e experiência de produto, testes e regras, e refinamento técnico e visual.
+
+## Como contribuir
+
+1. Escolha ou abra uma issue vinculada a um milestone do ciclo atual.
+2. Crie uma branch a partir de `main` seguindo o padrão `tipo/<issue>-descricao-curta`, por exemplo `feature/6-bracket-mata-mata` ou `docs/3-readme-onboarding`. Tipos aceitos: `feature`, `fix`, `refactor`, `docs`, `chore`.
+3. Faça commits no padrão [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`, `ci:`).
+4. Rode a [validação local](#como-validar-o-projeto) antes de abrir o PR.
+5. Abra o PR usando o template do repositório: ele deve vincular a issue, descrever o que mudou, listar os testes/validações realizados e indicar o impacto esperado (inclua screenshots se alterar UI).
+6. Todo PR passa pelo CI (ruff, pytest, pylint, radon) e precisa de revisão do tech lead antes do merge.
+
+Guia completo de contribuição, papéis e convenções: [docs/guia_contribuicao.md](docs/guia_contribuicao.md).
 
 ## Autores do projeto
 
@@ -87,6 +127,7 @@ O projeto segue boas práticas de engenharia de software, com foco em:
 ## Documentação principal
 
 - [Arquitetura](docs/arquitetura.md)
+- [Deploy em produção](docs/deploy.md)
 - [Guia de contribuição](docs/guia_contribuicao.md)
 - [Métricas](docs/metricas.md)
 - [Inventário da origem](docs/inventario_origem.md)
