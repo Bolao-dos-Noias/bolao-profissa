@@ -4,6 +4,8 @@
 
 Bolão Profissa é uma aplicação web para organizar e acompanhar um bolão da Copa do Mundo de 2026 com foco em usabilidade, regras de pontuação claras, ranking público e uma arquitetura mais profissional do que a versão anterior.
 
+O projeto está disponível em [https://bolao-profissa.vercel.app](https://bolao-profissa.vercel.app).
+
 O projeto foi reconstruído com uma abordagem mais limpa e sustentável, separando responsabilidades entre rotas, serviços, domínio, modelos e templates. A ideia é preservar o comportamento do produto original, mas com melhores práticas de engenharia de software, testes e documentação.
 
 ## Visão geral
@@ -25,6 +27,8 @@ A plataforma oferece:
 - Jinja2
 - Uvicorn
 - Pytest, Ruff, Pylint e Radon
+- Deploy: Vercel
+- Banco de dados: Turso (libsql)
 
 ## Estrutura do repositório
 
