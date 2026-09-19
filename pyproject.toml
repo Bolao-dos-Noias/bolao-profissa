@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Bolao da Copa 2026 reconstruido com arquitetura limpa e fluxo de equipe."
 requires-python = ">=3.12"
 dependencies = [
-    "anyio>=4.0,<4.10",
+    "anyio>=4.0,<4.15",
     "fastapi>=0.115",
     "uvicorn[standard]>=0.32",
     "sqlmodel>=0.0.22",
